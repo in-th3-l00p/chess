@@ -15,3 +15,14 @@ impl Board {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_initializes() {
+        let board = Board::new();
+        assert_eq!(board.data, INITIAL_BOARD);
+    }
+}
