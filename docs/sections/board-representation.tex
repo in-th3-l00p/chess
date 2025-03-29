@@ -7,7 +7,7 @@
 \textbf{Board representation} is stored using an array with a \textit{12x10} dimension of \textit{1 byte words}.
 
 \subsection{Piece representation}
-\vspace{0.05\linewidth}
+\vspace{0.02\linewidth}
 \begin{center}
     \begin{bytefield}[
         endianness=little,
@@ -25,4 +25,9 @@
         \bitbox{1}{Type}
     \end{bytefield}
 \end{center}
-\vspace{0.05\linewidth}
+\begin{itemize}
+    \item Color: \textbf{1} - Black, \textbf{0} - White
+    \item Castle \scriptsize(king only)\normalsize: \textbf{1} - can castle, \textbf{0} - cannot
+    \item Moved \scriptsize(king, rook, and pawn only)\normalsize: \textbf{1} - has moved, \textbf{0} - not yet
+    \item Type: refer to \textbf{Piece type} subsection
+\end{itemize}
