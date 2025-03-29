@@ -1,3 +1,5 @@
+use crate::board::constants::INITIAL_BOARD;
+
 pub mod piece;
 pub mod color;
 mod constants;
@@ -9,7 +11,7 @@ pub struct Board {
 impl Board {
     pub fn new() -> Board {
         Board {
-            data: [[0u8; 10]; 12]
+            data: INITIAL_BOARD,
         }
     }
 }

@@ -31,7 +31,7 @@ pub enum Piece {
 // utility functions
 impl Piece {
     // gets bitmask of the color and state of the piece, without type
-    const fn get_data_bitmask(&self) -> u8 {
+    fn get_data_bitmask(&self) -> u8 {
         match self {
             Piece::Pawn {
                 color,
@@ -63,7 +63,7 @@ impl Piece {
 
 // bit manipulation functions
 impl Piece {
-    pub const fn to_u8(&self) -> u8 {
+    pub fn to_u8(&self) -> u8 {
         let piece_bitmask = match self {
             Piece::Pawn { .. } => 0u8,
             Piece::Knight { .. } => 0b00000001u8,
@@ -118,18 +118,18 @@ impl Hash for Piece {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::board::constants::PIECES;
+    use crate::board::constants::_PIECES;
 
     #[test]
     pub fn it_converts_to_u8() {
-        for (piece, piece_mask) in PIECES {
+        for (piece, piece_mask) in _PIECES {
             assert_eq!(piece.to_u8(), piece_mask);
         }
     }
 
     #[test]
     pub fn it_converts_from_u8() {
-        for (piece, piece_mask) in PIECES {
+        for (piece, piece_mask) in _PIECES {
             let optional_piece = Piece::from_u8(piece_mask);
             assert!(optional_piece.is_some());
             assert_eq!(optional_piece.unwrap(), piece);
@@ -138,7 +138,7 @@ mod tests {
 
     #[test]
     pub fn it_gets_data_bitmask() {
-        for (piece, piece_mask) in PIECES {
+        for (piece, piece_mask) in _PIECES {
             assert_eq!(piece.get_data_bitmask(), piece_mask & !0b00000111u8);
         }
     }
@@ -170,7 +170,7 @@ mod tests {
 
     #[test]
     pub fn it_hashes() {
-        for (piece, piece_mask) in PIECES {
+        for (piece, piece_mask) in _PIECES {
             let mut hasher = TestHasher::new();
             piece.to_u8().hash(&mut hasher);
             assert_eq!(hasher.finish(), piece_mask as u64);
@@ -180,8 +180,8 @@ mod tests {
 
     #[test]
     pub fn it_compares() {
-        for (piece1, piece1_mask) in PIECES {
-            for (piece2, piece2_mask) in PIECES {
+        for (piece1, piece1_mask) in _PIECES {
+            for (piece2, piece2_mask) in _PIECES {
                 if piece1_mask == piece2_mask {
                     assert_eq!(piece1, piece2);
                 } else {
