@@ -31,7 +31,7 @@ pub enum Piece {
 // utility functions
 impl Piece {
     // gets bitmask of the color and state of the piece, without type
-    fn get_data_bitmask(&self) -> u8 {
+    const fn get_data_bitmask(&self) -> u8 {
         match self {
             Piece::Pawn {
                 color,
@@ -63,7 +63,7 @@ impl Piece {
 
 // bit manipulation functions
 impl Piece {
-    pub fn to_u8(&self) -> u8 {
+    pub const fn to_u8(&self) -> u8 {
         let piece_bitmask = match self {
             Piece::Pawn { .. } => 0u8,
             Piece::Knight { .. } => 0b00000001u8,
@@ -103,7 +103,7 @@ impl Piece {
 
 impl PartialEq<Self> for Piece {
     fn eq(&self, other: &Self) -> bool {
-        self.get_data_bitmask() == other.get_data_bitmask()
+        self.to_u8() == other.to_u8()
     }
 }
 
