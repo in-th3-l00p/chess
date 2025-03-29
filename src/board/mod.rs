@@ -1,4 +1,5 @@
 pub mod piece;
+pub mod color;
 
 pub struct Board {
     data: [[u8; 10]; 12]

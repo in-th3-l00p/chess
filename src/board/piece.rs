@@ -1,21 +1,4 @@
-pub enum Color {
-    White,
-    Black
-}
-
-impl Color {
-    pub fn from_u8(val: u8) -> Color {
-        if val & 0b10000000u8 > 0u8 { Color::Black }
-        else { Color::White }
-    }
-
-    pub fn get_bitmask(&self) -> u8 {
-        match self {
-            Color::White => 0u8,
-            Color::Black => 0b10000000u8
-        }
-    }
-}
+use crate::board::color::Color;
 
 pub enum Piece {
     Pawn { color: Color, double_push: bool, has_moved: bool },
