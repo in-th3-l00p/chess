@@ -1,0 +1,28 @@
+%! Author = intheloop
+%! Date = 3/29/25
+
+
+\section{Board representation}
+
+\textbf{Board representation} is stored using an array with a \textit{12x10} dimension of \textit{1 byte words}.
+
+\subsection{Piece representation}
+\vspace{0.05\linewidth}
+\begin{center}
+    \begin{bytefield}[
+        endianness=little,
+        bitwidth=0.1\linewidth,
+        boxformatting={\centering\small}
+    ]{8}
+        \bitheader{0-7} \\
+        \bitbox{1}{Color}
+        \bitbox{1}{}
+        \bitbox{1}{}
+        \bitbox{1}{Castle}
+        \bitbox{1}{Moved}
+        \bitbox{1}{Type}
+        \bitbox{1}{Type}
+        \bitbox{1}{Type}
+    \end{bytefield}
+\end{center}
+\vspace{0.05\linewidth}
