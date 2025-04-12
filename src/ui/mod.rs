@@ -1,4 +1,4 @@
-mod board;
+mod rendering;
 mod logics;
 mod constants;
 
