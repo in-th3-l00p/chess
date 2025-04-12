@@ -1,9 +1,9 @@
 mod board;
-pub mod constants;
+mod logics;
+mod constants;
 
-use macroquad::color::BLACK;
-use macroquad::window::{clear_background, next_frame, Conf};
 use crate::board::Board;
+use macroquad::window::Conf;
 
 pub fn window_conf() -> Conf {
     Conf {
@@ -16,16 +16,9 @@ pub fn window_conf() -> Conf {
 }
 
 pub async fn run() {
-    let board = Board::new();
+    let mut board = Board::new();
     loop {
-        update(&board).await;
+        logics::update(&mut board).await;
+        logics::render(&board).await;
     }
-}
-
-async fn update(board: &Board) {
-    clear_background(BLACK);
-
-    board::draw_board(board);
-
-    next_frame().await;
 }
