@@ -2,6 +2,7 @@ pub mod pieces;
 
 use crate::board::Board;
 use macroquad::shapes::draw_rectangle;
+use crate::ui::rendering::pieces::Textures;
 
 fn draw_square(x: i32, y: i32) {
     draw_rectangle(
@@ -17,12 +18,12 @@ fn draw_square(x: i32, y: i32) {
     )
 }
 
-pub fn draw_board(board: &Board) {
+pub fn draw_board(textures: &Textures, board: &Board) {
     for x in 0..8 {
         for y in 0..8 {
             draw_square(x, y);
             if let Some(piece) = board.get_piece(x as usize, y as usize) {
-                pieces::draw_piece(x, y, piece);
+                pieces::draw_piece(textures, x, y, piece);
             }
         }
     }

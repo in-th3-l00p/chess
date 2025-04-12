@@ -21,6 +21,6 @@ pub async fn run() {
     let textures = Textures::new().await.unwrap();
     loop {
         // logics::update(&mut board).await;
-        logics::render(&board).await;
+        logics::render(&textures, &board).await;
     }
 }

@@ -1,7 +1,9 @@
-use macroquad::prelude::{draw_rectangle, load_texture, Texture2D};
 use crate::board::color::Color;
 use crate::board::piece::Piece;
 use crate::ui::constants;
+use macroquad::color::WHITE;
+use macroquad::math::Vec2;
+use macroquad::prelude::{draw_texture_ex, load_texture, DrawTextureParams, Texture2D};
 
 pub struct Textures {
     white_pawn: Texture2D,
@@ -67,12 +69,24 @@ impl Textures {
     }
 }
 
-pub fn draw_piece(x: i32, y: i32, piece: Piece) {
-    draw_rectangle(
+pub fn draw_piece(textures: &Textures, x: i32, y: i32, piece: Piece) {
+    draw_texture_ex(
+        textures.get_texture(&piece),
         (x * constants::board::SQUARE_SIZE) as f32,
         (y * constants::board::SQUARE_SIZE) as f32,
-        constants::board::SQUARE_SIZE as f32,
-        constants::board::SQUARE_SIZE as f32,
-        macroquad::color::Color::from_rgba(255, 255, 255, 255),
-    )
+        WHITE,
+        DrawTextureParams {
+            dest_size: Some(Vec2::from((
+                constants::board::SQUARE_SIZE as f32,
+                constants::board::SQUARE_SIZE as f32
+            ))),
+            ..Default::default()
+        }
+    );
+
+    // draw_rectangle(
+    //     constants::board::SQUARE_SIZE as f32,
+    //     constants::board::SQUARE_SIZE as f32,
+    //     macroquad::color::Color::from_rgba(255, 255, 255, 255),
+    // )
 }
