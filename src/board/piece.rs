@@ -65,18 +65,18 @@ impl Piece {
 impl Piece {
     pub fn to_u8(&self) -> u8 {
         let piece_bitmask = match self {
-            Piece::Pawn { .. } => 0u8,
-            Piece::Knight { .. } => 0b00000001u8,
-            Piece::Bishop { .. } => 0b00000010u8,
-            Piece::Rook { .. } => 0b00000011u8,
-            Piece::Queen { .. } => 0b00000100u8,
-            Piece::King { .. } => 0b00000101u8,
+            Piece::Pawn { .. } => 0b00000001u8,
+            Piece::Knight { .. } => 0b00000010u8,
+            Piece::Bishop { .. } => 0b00000011u8,
+            Piece::Rook { .. } => 0b00000100u8,
+            Piece::Queen { .. } => 0b00000101u8,
+            Piece::King { .. } => 0b00000110u8,
         };
         piece_bitmask | self.get_data_bitmask()
     }
 
     pub fn from_u8(val: u8) -> Option<Piece> {
-        if val == 254u8 {
+        if val == 0u8 {
             return None;
         }
 
@@ -86,16 +86,16 @@ impl Piece {
         let double_push = if val & 0b00010000u8 > 0 { true } else { false };
 
         match val & 0b00000111u8 {
-            0u8 => Some(Piece::Pawn {
+            1u8 => Some(Piece::Pawn {
                 color,
                 double_push,
                 has_moved,
             }),
-            1u8 => Some(Piece::Knight { color }),
-            2u8 => Some(Piece::Bishop { color }),
-            3u8 => Some(Piece::Rook { color, has_moved }),
-            4u8 => Some(Piece::Queen { color }),
-            5u8 => Some(Piece::King {
+            2u8 => Some(Piece::Knight { color }),
+            3u8 => Some(Piece::Bishop { color }),
+            4u8 => Some(Piece::Rook { color, has_moved }),
+            5u8 => Some(Piece::Queen { color }),
+            6u8 => Some(Piece::King {
                 color,
                 castling,
                 has_moved,
