@@ -1,6 +1,9 @@
 %! Author = intheloop
 %! Date = 4/12/25
 
+\definecolor{mywhite}{rgb}{0.941, 0.851, 0.710}
+\definecolor{myblack}{rgb}{0.710, 0.533, 0.388}
+
 \section{User interface}
 
 Might make the process more enjoyable.
@@ -13,3 +16,18 @@ leaving everything related to the code structure to the developer (me).
 \subsection{Code structure}
 
 Everything related to the user interface is implemented in the \textit{cargo::ui} module.
+
+\subsection{Graphics}
+
+\subsubsection{Background}
+
+For rendering the background, I have used the following colors:
+
+\begin{itemize}
+    \item For black: \colorbox{myblack}{\textcolor{white}{\textbf{\#b58863}}}
+    \item For white: \colorbox{mywhite}{\textbf{\#f0d9b5}}
+\end{itemize}
+
+\subsubsection{Pieces}
+
+Used assets from the following itch page: \url{https://dsphynx.itch.io/chess-pieces-16x16}
