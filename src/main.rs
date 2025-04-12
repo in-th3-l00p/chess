@@ -1,7 +1,11 @@
 mod board;
+mod ui;
 
-use crate::board::Board;
+use crate::ui::window_conf;
 
-fn main() {
-    Board::new();
+#[macroquad::main(window_conf)]
+async fn main() {
+    loop {
+        ui::update().await;
+    }
 }
