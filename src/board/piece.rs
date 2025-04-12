@@ -138,6 +138,7 @@ mod tests {
             assert!(optional_piece.is_some());
             assert_eq!(optional_piece.unwrap(), piece);
         }
+        assert_eq!(Piece::from_u8(0u8), None);
     }
 
     #[test]
