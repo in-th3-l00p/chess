@@ -76,6 +76,10 @@ impl Piece {
     }
 
     pub fn from_u8(val: u8) -> Option<Piece> {
+        if val == 0u8 {
+            return None;
+        }
+
         let color = Color::from_u8(val);
         let castling = if val & 0b00010000u8 > 0 { true } else { false };
         let has_moved = if val & 0b00001000u8 > 0 { true } else { false };

@@ -1,4 +1,5 @@
 use crate::board::constants::INITIAL_BOARD;
+use crate::board::piece::Piece;
 
 pub mod piece;
 pub mod color;
@@ -12,6 +13,14 @@ impl Board {
     pub fn new() -> Board {
         Board {
             data: INITIAL_BOARD,
+        }
+    }
+
+    pub fn get_piece(&self, x: usize, y: usize) -> Option<Piece> {
+        if x < 0 || x >= 8 || y < 0 || y >= 8 {
+            None
+        } else {
+            Piece::from_u8(self.data[y + 2usize][x + 1usize])
         }
     }
 }

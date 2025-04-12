@@ -18,7 +18,7 @@ pub fn window_conf() -> Conf {
 pub async fn run() {
     let mut board = Board::new();
     loop {
-        logics::update(&mut board).await;
+        // logics::update(&mut board).await;
         logics::render(&board).await;
     }
 }
