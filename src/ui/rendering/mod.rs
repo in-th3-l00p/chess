@@ -1,3 +1,5 @@
+pub mod pieces;
+
 use crate::board::piece::Piece;
 use crate::board::Board;
 use macroquad::prelude::Color;

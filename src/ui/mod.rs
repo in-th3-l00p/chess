@@ -4,6 +4,7 @@ mod constants;
 
 use crate::board::Board;
 use macroquad::window::Conf;
+use crate::ui::rendering::pieces::Textures;
 
 pub fn window_conf() -> Conf {
     Conf {
@@ -17,6 +18,7 @@ pub fn window_conf() -> Conf {
 
 pub async fn run() {
     let mut board = Board::new();
+    let textures = Textures::new().await.unwrap();
     loop {
         // logics::update(&mut board).await;
         logics::render(&board).await;
