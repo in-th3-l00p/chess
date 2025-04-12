@@ -10,5 +10,7 @@ pub mod board {
 
     pub const WHITE: Color = Color::new(0.941, 0.851, 0.710, 1.0);
     pub const BLACK: Color = Color::new(0.710, 0.533, 0.388, 1.0);
+
     pub const SQUARE_SIZE: i32 = super::window::WINDOW_WIDTH / 8;
+    pub const PIECE_PADDING: i32 = 5;
 }

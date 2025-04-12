@@ -88,13 +88,13 @@ impl Textures {
 pub fn draw_piece(textures: &Textures, x: i32, y: i32, piece: Piece) {
     draw_texture_ex(
         textures.get_texture(&piece),
-        (x * constants::board::SQUARE_SIZE) as f32,
-        (y * constants::board::SQUARE_SIZE) as f32,
+        (x * constants::board::SQUARE_SIZE + constants::board::PIECE_PADDING) as f32,
+        (y * constants::board::SQUARE_SIZE + constants::board::PIECE_PADDING) as f32,
         WHITE,
         DrawTextureParams {
             dest_size: Some(Vec2::from((
-                constants::board::SQUARE_SIZE as f32,
-                constants::board::SQUARE_SIZE as f32
+                (constants::board::SQUARE_SIZE - 2 * constants::board::PIECE_PADDING) as f32,
+                (constants::board::SQUARE_SIZE - 2 * constants::board::PIECE_PADDING) as f32,
             ))),
             ..Default::default()
         }
