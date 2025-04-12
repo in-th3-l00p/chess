@@ -1,6 +1,7 @@
-use macroquad::prelude::{load_texture, Texture2D};
+use macroquad::prelude::{draw_rectangle, load_texture, Texture2D};
 use crate::board::color::Color;
 use crate::board::piece::Piece;
+use crate::ui::constants;
 
 pub struct Textures {
     white_pawn: Texture2D,
@@ -64,4 +65,14 @@ impl Textures {
             }
         }
     }
+}
+
+pub fn draw_piece(x: i32, y: i32, piece: Piece) {
+    draw_rectangle(
+        (x * constants::board::SQUARE_SIZE) as f32,
+        (y * constants::board::SQUARE_SIZE) as f32,
+        constants::board::SQUARE_SIZE as f32,
+        constants::board::SQUARE_SIZE as f32,
+        macroquad::color::Color::from_rgba(255, 255, 255, 255),
+    )
 }
