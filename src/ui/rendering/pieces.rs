@@ -3,6 +3,7 @@ use crate::board::piece::Piece;
 use crate::ui::constants;
 use macroquad::color::WHITE;
 use macroquad::math::Vec2;
+use macroquad::miniquad::FilterMode;
 use macroquad::prelude::{draw_texture_ex, load_texture, DrawTextureParams, Texture2D};
 
 pub struct Textures {
@@ -23,7 +24,7 @@ pub struct Textures {
 impl Textures {
     /// loads the textures
     pub async fn new() -> Result<Self, macroquad::Error> {
-        Ok(Textures {
+        let textures = Textures {
             white_pawn: load_texture("assets/piece1.png").await?,
             white_knight: load_texture("assets/piece2.png").await?,
             white_bishop: load_texture("assets/piece4.png").await?,
@@ -36,7 +37,22 @@ impl Textures {
             black_rook: load_texture("assets/piece9.png").await?,
             black_queen: load_texture("assets/piece11.png").await?,
             black_king: load_texture("assets/piece12.png").await?,
-        })
+        };
+
+        textures.white_pawn.set_filter(FilterMode::Nearest);
+        textures.white_knight.set_filter(FilterMode::Nearest);
+        textures.white_bishop.set_filter(FilterMode::Nearest);
+        textures.white_rook.set_filter(FilterMode::Nearest);
+        textures.white_queen.set_filter(FilterMode::Nearest);
+        textures.white_king.set_filter(FilterMode::Nearest);
+        textures.black_pawn.set_filter(FilterMode::Nearest);
+        textures.black_knight.set_filter(FilterMode::Nearest);
+        textures.black_bishop.set_filter(FilterMode::Nearest);
+        textures.black_rook.set_filter(FilterMode::Nearest);
+        textures.black_queen.set_filter(FilterMode::Nearest);
+        textures.black_king.set_filter(FilterMode::Nearest);
+
+        Ok(textures)
     }
 
     pub fn get_texture(&self, piece: &Piece) -> &Texture2D {
@@ -83,10 +99,4 @@ pub fn draw_piece(textures: &Textures, x: i32, y: i32, piece: Piece) {
             ..Default::default()
         }
     );
-
-    // draw_rectangle(
-    //     constants::board::SQUARE_SIZE as f32,
-    //     constants::board::SQUARE_SIZE as f32,
-    //     macroquad::color::Color::from_rgba(255, 255, 255, 255),
-    // )
 }
