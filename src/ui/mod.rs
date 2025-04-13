@@ -20,14 +20,17 @@ pub fn window_conf() -> Conf {
 struct GameState {
     board: Board,
     textures: Textures,
-    selected_piece: Option<(usize, usize)>
+
+    selected_piece: Option<(usize, usize)>,
+    preview_piece: Option<(usize, usize)>,
 }
 
 pub async fn run() {
     let mut state = GameState {
         board: Board::new(),
         textures: Textures::new().await.unwrap(),
-        selected_piece: None
+        selected_piece: None,
+        preview_piece: None,
     };
     loop {
         logics::update(&mut state).await;
