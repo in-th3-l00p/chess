@@ -44,7 +44,7 @@ pub async fn render(state: &GameState) {
             ((coords.1 as i32) * constants::board::SQUARE_SIZE) as f32,
             constants::board::SQUARE_SIZE as f32,
             constants::board::SQUARE_SIZE as f32,
-            Color::from_rgba(255, 0, 0, 255),
+            Color::from_rgba(0, 0, 0, 50),
         );
     }
 
