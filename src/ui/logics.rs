@@ -2,6 +2,7 @@ use crate::ui::{constants, rendering, GameState};
 use macroquad::color::BLACK;
 use macroquad::input::{is_mouse_button_down, is_mouse_button_released, mouse_position, MouseButton};
 use macroquad::prelude::{clear_background, draw_rectangle, next_frame, Color};
+use crate::board::piece::Piece;
 
 fn get_selected_square() -> (usize, usize) {
     (
@@ -46,6 +47,23 @@ pub async fn render(state: &GameState) {
             constants::board::SQUARE_SIZE as f32,
             Color::from_rgba(0, 0, 0, 50),
         );
+
+        let piece = state.board.get_piece(coords.0, coords.1).unwrap();
+        match piece {
+            Piece::Pawn { .. } => {
+                let moves = crate::move_generation::generate(&state.board, coords);
+                for possible_move in moves {
+                    draw_rectangle(
+                        ((possible_move.0 as i32) * constants::board::SQUARE_SIZE) as f32,
+                        ((possible_move.1 as i32) * constants::board::SQUARE_SIZE) as f32,
+                        constants::board::SQUARE_SIZE as f32,
+                        constants::board::SQUARE_SIZE as f32,
+                        Color::from_rgba(0, 0, 0, 50),
+                    );
+                }
+            },
+            _ => {}
+        };
     }
 
     next_frame().await;

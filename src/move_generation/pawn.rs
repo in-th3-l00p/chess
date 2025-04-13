@@ -9,9 +9,9 @@ pub fn generate(
     color: &Color,
     has_moved: &bool
 ) {
-    let delta = if let Color::White = color { 1 } else { -1 };
-    insert_pos(board, moves, (pos.0 + delta, pos.1 + delta));
+    let delta = if let Color::White = color { -1 } else { 1 };
+    insert_pos(board, moves, (pos.0, pos.1 + delta));
     if !has_moved {
-        insert_pos(board, moves, (pos.0 + 2 * delta, pos.1 + 2 * delta));
+        insert_pos(board, moves, (pos.0, pos.1 + 2 * delta));
     }
 }
