@@ -1,4 +1,4 @@
-use crate::board::piece::Piece;
+use crate::move_generation::generate_possible_moves;
 use crate::ui::rendering::draw_board;
 use crate::ui::rendering::utils::draw_board_square;
 use crate::ui::{constants, GameState};
@@ -18,6 +18,7 @@ fn get_selected_square() -> (usize, usize) {
 pub async fn update(state: &mut GameState) {
     if is_mouse_button_down(MouseButton::Left) {
         state.selected_piece = None;
+        state.possible_moves = None;
         let selected_square = get_selected_square();
         if state.board.get_piece(selected_square.0, selected_square.1).is_some() {
             state.preview_piece = Some(selected_square);
@@ -26,6 +27,7 @@ pub async fn update(state: &mut GameState) {
 
     if is_mouse_button_released(MouseButton::Left) {
         let selected_square = get_selected_square();
+        state.possible_moves = Some(generate_possible_moves(&state.board, selected_square));
         if state.board.get_piece(selected_square.0, selected_square.1).is_some() {
             state.selected_piece = Some(selected_square);
         }
@@ -47,19 +49,14 @@ pub async fn render(state: &GameState) {
             Color::from_rgba(0, 0, 0, 50)
         );
 
-        let piece = state.board.get_piece(coords.0, coords.1).unwrap();
-        match piece {
-            Piece::Pawn { .. } => {
-                let moves = crate::move_generation::generate(&state.board, coords);
-                for possible_move in moves {
-                    draw_board_square(
-                        possible_move,
-                        Color::from_rgba(0, 0, 0, 50)
-                    );
-                }
-            },
-            _ => {}
-        };
+        if state.possible_moves.is_some() {
+            for possible_move in state.possible_moves.as_ref().unwrap() {
+                draw_board_square(
+                    possible_move.clone(),
+                    Color::from_rgba(0, 0, 0, 50)
+                );
+            }
+        }
     }
 
     next_frame().await;

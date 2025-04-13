@@ -23,6 +23,7 @@ struct GameState {
 
     selected_piece: Option<(usize, usize)>,
     preview_piece: Option<(usize, usize)>,
+    possible_moves: Option<Vec<(usize, usize)>>,
 }
 
 pub async fn run() {
@@ -31,6 +32,7 @@ pub async fn run() {
         textures: Textures::new().await.unwrap(),
         selected_piece: None,
         preview_piece: None,
+        possible_moves: None,
     };
     loop {
         logics::update(&mut state).await;
