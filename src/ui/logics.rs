@@ -1,8 +1,10 @@
-use crate::ui::{constants, rendering, GameState};
+use crate::board::piece::Piece;
+use crate::ui::rendering::draw_board;
+use crate::ui::rendering::utils::draw_board_square;
+use crate::ui::{constants, GameState};
 use macroquad::color::BLACK;
 use macroquad::input::{is_mouse_button_down, is_mouse_button_released, mouse_position, MouseButton};
-use macroquad::prelude::{clear_background, draw_rectangle, next_frame, Color};
-use crate::board::piece::Piece;
+use macroquad::prelude::{clear_background, next_frame, Color};
 
 fn get_selected_square() -> (usize, usize) {
     (
@@ -35,17 +37,14 @@ pub async fn update(state: &mut GameState) {
 pub async fn render(state: &GameState) {
     clear_background(BLACK);
 
-    rendering::draw_board(&state.textures, &state.board);
+    draw_board(&state.textures, &state.board);
     if state.selected_piece.is_some() || state.preview_piece.is_some() {
         let coords = state
             .selected_piece
             .unwrap_or_else(|| state.preview_piece.unwrap());
-        draw_rectangle(
-            ((coords.0 as i32) * constants::board::SQUARE_SIZE) as f32,
-            ((coords.1 as i32) * constants::board::SQUARE_SIZE) as f32,
-            constants::board::SQUARE_SIZE as f32,
-            constants::board::SQUARE_SIZE as f32,
-            Color::from_rgba(0, 0, 0, 50),
+        draw_board_square(
+            coords,
+            Color::from_rgba(0, 0, 0, 50)
         );
 
         let piece = state.board.get_piece(coords.0, coords.1).unwrap();
@@ -53,12 +52,9 @@ pub async fn render(state: &GameState) {
             Piece::Pawn { .. } => {
                 let moves = crate::move_generation::generate(&state.board, coords);
                 for possible_move in moves {
-                    draw_rectangle(
-                        ((possible_move.0 as i32) * constants::board::SQUARE_SIZE) as f32,
-                        ((possible_move.1 as i32) * constants::board::SQUARE_SIZE) as f32,
-                        constants::board::SQUARE_SIZE as f32,
-                        constants::board::SQUARE_SIZE as f32,
-                        Color::from_rgba(0, 0, 0, 50),
+                    draw_board_square(
+                        possible_move,
+                        Color::from_rgba(0, 0, 0, 50)
                     );
                 }
             },

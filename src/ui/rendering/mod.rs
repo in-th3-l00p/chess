@@ -1,15 +1,13 @@
 pub mod pieces;
+pub mod utils;
 
 use crate::board::Board;
-use macroquad::shapes::draw_rectangle;
 use crate::ui::rendering::pieces::Textures;
+use crate::ui::rendering::utils::draw_board_square;
 
-fn draw_square(x: i32, y: i32) {
-    draw_rectangle(
-        (x * super::constants::board::SQUARE_SIZE) as f32,
-        (y * super::constants::board::SQUARE_SIZE) as f32,
-       super::constants::board::SQUARE_SIZE as f32,
-       super::constants::board::SQUARE_SIZE as f32,
+fn draw_square(x: usize, y: usize) {
+    draw_board_square(
+        (x, y),
        if (x + y) % 2 == 0 {
            super::constants::board::WHITE
        } else {
@@ -19,10 +17,10 @@ fn draw_square(x: i32, y: i32) {
 }
 
 pub fn draw_board(textures: &Textures, board: &Board) {
-    for x in 0..8 {
-        for y in 0..8 {
+    for x in 0usize..8usize {
+        for y in 0usize..8usize {
             draw_square(x, y);
-            if let Some(piece) = board.get_piece(x as usize, y as usize) {
+            if let Some(piece) = board.get_piece(x, y) {
                 pieces::draw_piece(textures, x, y, piece);
             }
         }
