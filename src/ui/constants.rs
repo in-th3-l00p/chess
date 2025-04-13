@@ -1,7 +1,7 @@
 pub mod window {
     pub const WINDOW_TITLE: &str = "Crab chess";
-    pub const WINDOW_WIDTH: i32 = 400;
-    pub const WINDOW_HEIGHT: i32 = 400;
+    pub const WINDOW_WIDTH: i32 = 600;
+    pub const WINDOW_HEIGHT: i32 = 600;
     pub const WINDOW_RESIZABLE: bool = false;
 }
 
