@@ -56,7 +56,7 @@ impl Textures {
     }
 
     pub fn get_texture(&self, piece: &Piece) -> &Texture2D {
-        match (piece) {
+        match piece {
             Piece::Pawn { color, .. } => match color {
                 Color::Black => &self.black_pawn,
                 Color::White => &self.white_pawn
