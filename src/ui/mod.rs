@@ -16,11 +16,21 @@ pub fn window_conf() -> Conf {
     }
 }
 
+// keeps all the variables of the game
+struct GameState {
+    board: Board,
+    textures: Textures,
+    selected_piece: Option<(usize, usize)>
+}
+
 pub async fn run() {
-    let mut board = Board::new();
-    let textures = Textures::new().await.unwrap();
+    let mut state = GameState {
+        board: Board::new(),
+        textures: Textures::new().await.unwrap(),
+        selected_piece: None
+    };
     loop {
-        logics::update(&mut board).await;
-        logics::render(&textures, &board).await;
+        logics::update(&mut state).await;
+        logics::render(&state).await;
     }
 }
