@@ -23,6 +23,15 @@ impl Board {
             Piece::from_u8(self.data[y + 2usize][x + 1usize])
         }
     }
+
+    pub fn move_piece(
+        &mut self,
+        from: (usize, usize),
+        to: (usize, usize)
+    ) {
+        self.data[to.1 + 2usize][to.0 + 1usize] = self.data[from.1 + 2][from.0 + 1usize];
+        self.data[from.1 + 2usize][from.0 + 1usize] = 0u8;
+    }
 }
 
 #[cfg(test)]

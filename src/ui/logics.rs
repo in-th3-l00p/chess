@@ -16,20 +16,51 @@ fn get_selected_square() -> (usize, usize) {
 /// used for updating the game logics
 /// gets called in the game loop
 pub async fn update(state: &mut GameState) {
-    if is_mouse_button_down(MouseButton::Left) {
-        state.selected_piece = None;
-        state.possible_moves = None;
+    if
+        state.possible_moves.is_some()  &&
+        is_mouse_button_released(MouseButton::Left)
+    {
+        // moving
         let selected_square = get_selected_square();
-        if state.board.get_piece(selected_square.0, selected_square.1).is_some() {
-            state.preview_piece = Some(selected_square);
+        if state.possible_moves
+            .as_ref()
+            .unwrap()
+            .contains(&selected_square)
+        {
+            state.board.move_piece(
+                state.selected_piece.unwrap(),
+                selected_square
+            );
+            state.selected_piece = None;
+            state.possible_moves = None;
+            state.preview_piece = None;
         }
-    }
+    } else {
+        if is_mouse_button_down(MouseButton::Left) {
+            let selected_square = get_selected_square();
+            if !(
+                state.possible_moves.is_some() &&
+                state.possible_moves
+                    .as_ref()
+                    .unwrap()
+                    .contains(&selected_square)
+            ) {
+                state.selected_piece = None;
+                state.possible_moves = None;
 
-    if is_mouse_button_released(MouseButton::Left) {
-        let selected_square = get_selected_square();
-        state.possible_moves = Some(generate_possible_moves(&state.board, selected_square));
-        if state.board.get_piece(selected_square.0, selected_square.1).is_some() {
-            state.selected_piece = Some(selected_square);
+                // pressing on other piece
+                if state.board.get_piece(selected_square.0, selected_square.1).is_some() {
+                    state.preview_piece = Some(selected_square);
+                }
+            }
+        }
+
+        if is_mouse_button_released(MouseButton::Left) {
+            let selected_square = get_selected_square();
+            state.possible_moves = Some(generate_possible_moves(&state.board, selected_square));
+            if state.board.get_piece(selected_square.0, selected_square.1).is_some() {
+                state.selected_piece = Some(selected_square);
+            }
         }
     }
 }
