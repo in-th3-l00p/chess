@@ -6,10 +6,10 @@ use macroquad::color::BLACK;
 use macroquad::input::{is_mouse_button_down, is_mouse_button_released, mouse_position, MouseButton};
 use macroquad::prelude::{clear_background, next_frame, Color};
 
-fn get_selected_square() -> (usize, usize) {
+fn get_selected_square() -> (i32, i32) {
     (
-        (mouse_position().0 / constants::board::SQUARE_SIZE as f32).floor() as usize,
-        (mouse_position().1 / constants::board::SQUARE_SIZE as f32).floor() as usize
+        (mouse_position().0 / constants::board::SQUARE_SIZE as f32).floor() as i32,
+        (mouse_position().1 / constants::board::SQUARE_SIZE as f32).floor() as i32
     )
 }
 

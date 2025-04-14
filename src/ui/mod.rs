@@ -21,9 +21,9 @@ struct GameState {
     board: Board,
     textures: Textures,
 
-    selected_piece: Option<(usize, usize)>,
-    preview_piece: Option<(usize, usize)>,
-    possible_moves: Option<Vec<(usize, usize)>>,
+    selected_piece: Option<(i32, i32)>,
+    preview_piece: Option<(i32, i32)>,
+    possible_moves: Option<Vec<(i32, i32)>>,
 }
 
 pub async fn run() {

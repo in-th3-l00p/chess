@@ -76,7 +76,7 @@ impl Piece {
     }
 
     pub fn from_u8(val: u8) -> Option<Piece> {
-        if val == 0u8 {
+        if val == 0u8 || val == 255u8 {
             return None;
         }
 

@@ -16,30 +16,26 @@ impl Board {
         }
     }
 
-    pub fn get_piece(&self, coords: (usize, usize)) -> Option<Piece> {
-        if coords.0 >= 8 || coords.1 >= 8 {
-            None
-        } else {
-            Piece::from_u8(self.data[coords.1 + 2usize][coords.0 + 1usize])
-        }
+    pub fn get_piece(&self, coords: (i32, i32)) -> Option<Piece> {
+        Piece::from_u8(self.data[(coords.1 + 2) as usize][(coords.0 + 1) as usize])
     }
 
-    pub fn set_piece(&mut self, coords: (usize, usize), piece: &Piece) {
+    pub fn set_piece(&mut self, coords: (i32, i32), piece: &Piece) {
         self.set_data(coords, piece.to_u8());
     }
 
-    fn get_data(&self, coords: (usize, usize)) -> u8 {
-        self.data[coords.1 + 2usize][coords.0 + 1usize]
+    fn get_data(&self, coords: (i32, i32)) -> u8 {
+        self.data[(coords.1 + 2) as usize][(coords.0 + 1) as usize]
     }
 
-    fn set_data(&mut self, coords: (usize, usize),  piece: u8) {
-        self.data[coords.1 + 2usize][coords.0 + 1usize] = piece;
+    fn set_data(&mut self, coords: (i32, i32),  piece: u8) {
+        self.data[(coords.1 + 2) as usize][(coords.0 + 1) as usize] = piece;
     }
 
     pub fn move_piece(
         &mut self,
-        from: (usize, usize),
-        to: (usize, usize)
+        from: (i32, i32),
+        to: (i32, i32)
     ) {
         // marking has_moved
         if let Some(piece) = self.get_piece(from) {
