@@ -24,13 +24,39 @@ impl Board {
         }
     }
 
+    pub fn set_piece(&mut self, x: usize, y: usize, piece: &Piece) {
+        self.set_data(x, y, piece.to_u8());
+    }
+
+    fn get_data(&mut self, x: usize, y: usize) -> u8 {
+        self.data[y + 2usize][x + 1usize]
+    }
+
+    fn set_data(&mut self, x: usize, y: usize, piece: u8) {
+        self.data[y + 2usize][x + 1usize] = piece;
+    }
+
     pub fn move_piece(
         &mut self,
         from: (usize, usize),
         to: (usize, usize)
     ) {
-        self.data[to.1 + 2usize][to.0 + 1usize] = self.data[from.1 + 2][from.0 + 1usize];
-        self.data[from.1 + 2usize][from.0 + 1usize] = 0u8;
+        // marking has_moved
+        if let Some(piece) = self.get_piece(from.0, from.1) {
+            match piece {
+                Piece::Pawn { color, double_push, .. } => {
+                    self.data[from.1 + 2usize][from.0 + 1usize] = Piece::Pawn {
+                        color,
+                        double_push,
+                        has_moved: true
+                    }.to_u8();
+                },
+                _ => {}
+            }
+        }
+
+        self.set_data(to.0, to.1, self.get_data(from.0, from.1));
+        self.set_data(from.0, from.1, 0u8);
     }
 }
 
