@@ -45,11 +45,11 @@ impl Board {
         if let Some(piece) = self.get_piece(from.0, from.1) {
             match piece {
                 Piece::Pawn { color, double_push, .. } => {
-                    self.data[from.1 + 2usize][from.0 + 1usize] = Piece::Pawn {
+                    self.set_piece(from.0, from.1, &Piece::Pawn {
                         color,
                         double_push,
                         has_moved: true
-                    }.to_u8();
+                    });
                 },
                 _ => {}
             }
