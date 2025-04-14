@@ -51,6 +51,19 @@ impl Board {
                         has_moved: true
                     });
                 },
+                Piece::Rook { color, .. } => {
+                    self.set_piece(from.0, from.1, &Piece::Rook {
+                        color,
+                        has_moved: true
+                    });
+                },
+                Piece::King { color, .. } => {
+                    self.set_piece(from.0, from.1, &Piece::King {
+                        color,
+                        castling: false,
+                        has_moved: true
+                    });
+                }
                 _ => {}
             }
         }
