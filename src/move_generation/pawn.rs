@@ -11,7 +11,7 @@ pub fn generate(
 ) {
     let delta = if let Color::White = color { -1 } else { 1 };
     insert_pos(board, moves, (pos.0, pos.1 + delta));
-    if !has_moved && board.get_piece(*pos).is_none() {
+    if !has_moved && board.get_piece((pos.0, pos.1 + delta)).is_none() {
         insert_pos(board, moves, (pos.0, pos.1 + 2 * delta));
     }
 }
