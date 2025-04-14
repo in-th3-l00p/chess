@@ -12,20 +12,15 @@ pub fn generate(
     if board.get_piece((pos.0, pos.1 + delta)).is_none() {
         moves.push((pos.0, pos.1 + delta));
     }
-    let right_capture = board.get_piece((pos.0 + 1, pos.1 + delta));
-    if
-        right_capture.is_some() &&
-        right_capture.unwrap().color != piece.color
-    {
-
-        moves.push((pos.0 + 1, pos.1 + delta));
+    if let Some(right_capture) = board.get_piece((pos.0 + 1, pos.1 + delta)) {
+        if right_capture.color != piece.color {
+            moves.push((pos.0 + 1, pos.1 + delta));
+        }
     }
-    let left_capture = board.get_piece((pos.0 - 1, pos.1 + delta));
-    if
-        left_capture.is_some() &&
-        left_capture.unwrap().color != piece.color
-    {
-        moves.push((pos.0 - 1, pos.1 + delta));
+    if let Some(left_capture) = board.get_piece((pos.0 - 1, pos.1 + delta)) {
+        if left_capture.color != piece.color {
+            moves.push((pos.0 - 1, pos.1 + delta));
+        }
     }
     if let PieceType::Pawn { has_moved, .. } = piece.piece_type {
         if
