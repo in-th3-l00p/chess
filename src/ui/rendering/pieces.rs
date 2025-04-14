@@ -1,5 +1,5 @@
 use crate::board::color::Color;
-use crate::board::piece::Piece;
+use crate::board::piece::{Piece, PieceType};
 use crate::ui::constants;
 use macroquad::color::WHITE;
 use macroquad::math::Vec2;
@@ -56,28 +56,28 @@ impl Textures {
     }
 
     pub fn get_texture(&self, piece: &Piece) -> &Texture2D {
-        match piece {
-            Piece::Pawn { color, .. } => match color {
+        match piece.piece_type {
+            PieceType::Pawn { .. } => match piece.color {
                 Color::Black => &self.black_pawn,
                 Color::White => &self.white_pawn
             },
-            Piece::Knight { color, .. } => match color {
+            PieceType::Knight => match piece.color {
                 Color::Black => &self.black_knight,
                 Color::White => &self.white_knight
             },
-            Piece::Bishop { color, .. } => match color {
+            PieceType::Bishop  => match piece.color {
                 Color::Black => &self.black_bishop,
                 Color::White => &self.white_bishop
             },
-            Piece::Rook { color, .. } => match color {
+            PieceType::Rook { .. } => match piece.color {
                 Color::Black => &self.black_rook,
                 Color::White => &self.white_rook
             },
-            Piece::Queen { color, .. } => match color {
+            PieceType::Queen => match piece.color {
                 Color::Black => &self.black_queen,
                 Color::White => &self.white_queen
             },
-            Piece::King { color, .. } => match color {
+            PieceType::King { .. } => match piece.color {
                 Color::Black => &self.black_king,
                 Color::White => &self.white_king
             }

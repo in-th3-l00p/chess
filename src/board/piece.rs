@@ -2,61 +2,65 @@ use crate::board::color::Color;
 use std::hash::{Hash, Hasher};
 
 #[derive(Debug)]
-pub enum Piece {
+pub struct Piece {
+    pub(crate) color: Color,
+    pub(crate) piece_type: PieceType
+}
+
+#[derive(Debug)]
+pub enum PieceType {
     Pawn {
-        color: Color,
         double_push: bool,
         has_moved: bool,
     },
-    Knight {
-        color: Color,
-    },
-    Bishop {
-        color: Color,
-    },
+    Knight,
+    Bishop,
     Rook {
-        color: Color,
         has_moved: bool,
     },
-    Queen {
-        color: Color,
-    },
+    Queen,
     King {
-        color: Color,
         castling: bool,
         has_moved: bool,
     },
+}
+
+impl PieceType {
+    pub fn to_u8(&self) -> u8 {
+        match self {
+            PieceType::Pawn { .. } => 0b00000001u8,
+            PieceType::Knight { .. } => 0b00000010u8,
+            PieceType::Bishop { .. } => 0b00000011u8,
+            PieceType::Rook { .. } => 0b00000100u8,
+            PieceType::Queen { .. } => 0b00000101u8,
+            PieceType::King { .. } => 0b00000110u8,
+        }
+    }
 }
 
 // utility functions
 impl Piece {
     // gets bitmask of the color and state of the piece, without type
     fn get_data_bitmask(&self) -> u8 {
-        match self {
-            Piece::Pawn {
-                color,
+        self.color.get_bitmask() | match self.piece_type {
+            PieceType::Pawn {
                 double_push,
                 has_moved,
             } => {
-                (if *has_moved { 0b00001000u8 } else { 0u8 })
-                    | (if *double_push { 0b00010000u8 } else { 0u8 })
-                    | color.get_bitmask()
+                (if has_moved { 0b00001000u8 } else { 0u8 })
+                    | (if double_push { 0b00010000u8 } else { 0u8 })
             }
-            Piece::Knight { color } => color.get_bitmask(),
-            Piece::Bishop { color } => color.get_bitmask(),
-            Piece::Rook { color, has_moved } => {
-                (if *has_moved { 0b00001000u8 } else { 0u8 }) | color.get_bitmask()
+            PieceType::Rook { has_moved } => {
+                if has_moved { 0b00001000u8 } else { 0u8 }
             }
-            Piece::Queen { color } => color.get_bitmask(),
-            Piece::King {
-                color,
+            PieceType::King {
                 castling,
                 has_moved,
             } => {
-                (if *has_moved { 0b00001000u8 } else { 0u8 })
-                    | (if *castling { 0b00010000u8 } else { 0u8 })
-                    | color.get_bitmask()
-            }
+                (if has_moved { 0b00001000u8 } else { 0u8 })
+                    | (if castling { 0b00010000u8 } else { 0u8 })
+            },
+            _ => 0u8
         }
     }
 }
@@ -64,15 +68,7 @@ impl Piece {
 // bit manipulation functions
 impl Piece {
     pub fn to_u8(&self) -> u8 {
-        let piece_bitmask = match self {
-            Piece::Pawn { .. } => 0b00000001u8,
-            Piece::Knight { .. } => 0b00000010u8,
-            Piece::Bishop { .. } => 0b00000011u8,
-            Piece::Rook { .. } => 0b00000100u8,
-            Piece::Queen { .. } => 0b00000101u8,
-            Piece::King { .. } => 0b00000110u8,
-        };
-        piece_bitmask | self.get_data_bitmask()
+        self.piece_type.to_u8() | self.get_data_bitmask()
     }
 
     pub fn from_u8(val: u8) -> Option<Piece> {
@@ -85,22 +81,28 @@ impl Piece {
         let has_moved = if val & 0b00001000u8 > 0 { true } else { false };
         let double_push = if val & 0b00010000u8 > 0 { true } else { false };
 
-        match val & 0b00000111u8 {
-            1u8 => Some(Piece::Pawn {
-                color,
+        let piece_type = match val & 0b00000111u8 {
+            1u8 => Some(PieceType::Pawn {
                 double_push,
                 has_moved,
             }),
-            2u8 => Some(Piece::Knight { color }),
-            3u8 => Some(Piece::Bishop { color }),
-            4u8 => Some(Piece::Rook { color, has_moved }),
-            5u8 => Some(Piece::Queen { color }),
-            6u8 => Some(Piece::King {
-                color,
+            2u8 => Some(PieceType::Knight),
+            3u8 => Some(PieceType::Bishop),
+            4u8 => Some(PieceType::Rook { has_moved }),
+            5u8 => Some(PieceType::Queen),
+            6u8 => Some(PieceType::King {
                 castling,
                 has_moved,
             }),
             _ => None,
+        };
+
+        if let Some(piece_type) = piece_type {
+            Some(Piece {
+                piece_type, color
+            })
+        } else {
+            None
         }
     }
 }

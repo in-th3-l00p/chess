@@ -1,5 +1,5 @@
 use crate::board::constants::INITIAL_BOARD;
-use crate::board::piece::Piece;
+use crate::board::piece::{Piece, PieceType};
 
 pub mod piece;
 pub mod color;
@@ -39,25 +39,31 @@ impl Board {
     ) {
         // marking has_moved
         if let Some(piece) = self.get_piece(from) {
-            match piece {
-                Piece::Pawn { color, double_push, .. } => {
-                    self.set_piece(from, &Piece::Pawn {
-                        color,
-                        double_push,
-                        has_moved: true
+            match piece.piece_type {
+                PieceType::Pawn { double_push, .. } => {
+                    self.set_piece(from, &Piece {
+                        color: piece.color,
+                        piece_type: PieceType::Pawn {
+                            double_push,
+                            has_moved: true
+                        },
                     });
                 },
-                Piece::Rook { color, .. } => {
-                    self.set_piece(from, &Piece::Rook {
-                        color,
-                        has_moved: true
+                PieceType::Rook { .. } => {
+                    self.set_piece(from, &Piece {
+                        color: piece.color,
+                        piece_type: PieceType::Rook {
+                            has_moved: true
+                        },
                     });
                 },
-                Piece::King { color, .. } => {
-                    self.set_piece(from, &Piece::King {
-                        color,
-                        castling: false,
-                        has_moved: true
+                PieceType::King { castling, .. } => {
+                    self.set_piece(from, &Piece {
+                        color: piece.color,
+                        piece_type: PieceType::King {
+                            castling,
+                            has_moved: true
+                        }
                     });
                 }
                 _ => {}
