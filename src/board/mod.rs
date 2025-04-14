@@ -16,24 +16,24 @@ impl Board {
         }
     }
 
-    pub fn get_piece(&self, x: usize, y: usize) -> Option<Piece> {
-        if x >= 8 || y >= 8 {
+    pub fn get_piece(&self, coords: (usize, usize)) -> Option<Piece> {
+        if coords.0 >= 8 || coords.1 >= 8 {
             None
         } else {
-            Piece::from_u8(self.data[y + 2usize][x + 1usize])
+            Piece::from_u8(self.data[coords.1 + 2usize][coords.0 + 1usize])
         }
     }
 
-    pub fn set_piece(&mut self, x: usize, y: usize, piece: &Piece) {
-        self.set_data(x, y, piece.to_u8());
+    pub fn set_piece(&mut self, coords: (usize, usize), piece: &Piece) {
+        self.set_data(coords, piece.to_u8());
     }
 
-    fn get_data(&self, x: usize, y: usize) -> u8 {
-        self.data[y + 2usize][x + 1usize]
+    fn get_data(&self, coords: (usize, usize)) -> u8 {
+        self.data[coords.1 + 2usize][coords.0 + 1usize]
     }
 
-    fn set_data(&mut self, x: usize, y: usize, piece: u8) {
-        self.data[y + 2usize][x + 1usize] = piece;
+    fn set_data(&mut self, coords: (usize, usize),  piece: u8) {
+        self.data[coords.1 + 2usize][coords.0 + 1usize] = piece;
     }
 
     pub fn move_piece(
@@ -42,23 +42,23 @@ impl Board {
         to: (usize, usize)
     ) {
         // marking has_moved
-        if let Some(piece) = self.get_piece(from.0, from.1) {
+        if let Some(piece) = self.get_piece(from) {
             match piece {
                 Piece::Pawn { color, double_push, .. } => {
-                    self.set_piece(from.0, from.1, &Piece::Pawn {
+                    self.set_piece(from, &Piece::Pawn {
                         color,
                         double_push,
                         has_moved: true
                     });
                 },
                 Piece::Rook { color, .. } => {
-                    self.set_piece(from.0, from.1, &Piece::Rook {
+                    self.set_piece(from, &Piece::Rook {
                         color,
                         has_moved: true
                     });
                 },
                 Piece::King { color, .. } => {
-                    self.set_piece(from.0, from.1, &Piece::King {
+                    self.set_piece(from, &Piece::King {
                         color,
                         castling: false,
                         has_moved: true
@@ -68,8 +68,8 @@ impl Board {
             }
         }
 
-        self.set_data(to.0, to.1, self.get_data(from.0, from.1));
-        self.set_data(from.0, from.1, 0u8);
+        self.set_data(to, self.get_data(from));
+        self.set_data(from, 0u8);
     }
 }
 

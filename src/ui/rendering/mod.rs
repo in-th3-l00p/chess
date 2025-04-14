@@ -20,7 +20,7 @@ pub fn draw_board(textures: &Textures, board: &Board) {
     for x in 0usize..8usize {
         for y in 0usize..8usize {
             draw_square(x, y);
-            if let Some(piece) = board.get_piece(x, y) {
+            if let Some(piece) = board.get_piece((x, y)) {
                 pieces::draw_piece(textures, x, y, piece);
             }
         }
