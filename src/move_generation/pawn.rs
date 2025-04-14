@@ -1,6 +1,5 @@
 use crate::board::Board;
 use crate::board::color::Color;
-use crate::move_generation::utils::insert_pos;
 
 pub fn generate(
     board: &Board,
@@ -10,8 +9,20 @@ pub fn generate(
     has_moved: &bool
 ) {
     let delta = if let Color::White = color { -1 } else { 1 };
-    insert_pos(board, moves, (pos.0, pos.1 + delta));
-    if !has_moved && board.get_piece((pos.0, pos.1 + delta)).is_none() {
-        insert_pos(board, moves, (pos.0, pos.1 + 2 * delta));
+    if board.get_piece((pos.0, pos.1 + delta)).is_none() {
+        moves.push((pos.0, pos.1 + delta));
+    }
+    if board.get_piece((pos.0 + 1, pos.1 + delta)).is_some() {
+        moves.push((pos.0 + 1, pos.1 + delta));
+    }
+    if board.get_piece((pos.0 - 1, pos.1 + delta)).is_some() {
+        moves.push((pos.0 - 1, pos.1 + delta));
+    }
+    if
+        !has_moved &&
+        board.get_piece((pos.0, pos.1 + delta)).is_none() &&
+        board.get_piece((pos.0, pos.1 + 2 * delta)).is_none()
+    {
+        moves.push((pos.0, pos.1 + 2 * delta));
     }
 }

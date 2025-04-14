@@ -79,14 +79,14 @@ pub async fn render(state: &GameState) {
             coords,
             Color::from_rgba(0, 0, 0, 50)
         );
+    }
 
-        if state.possible_moves.is_some() {
-            for possible_move in state.possible_moves.as_ref().unwrap() {
-                draw_board_square(
-                    possible_move.clone(),
-                    Color::from_rgba(0, 0, 0, 50)
-                );
-            }
+    if state.possible_moves.is_some() {
+        for possible_move in state.possible_moves.as_ref().unwrap() {
+            draw_board_square(
+                possible_move.clone(),
+                Color::from_rgba(0, 0, 0, 50)
+            );
         }
     }
 

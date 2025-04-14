@@ -1,4 +1,3 @@
-mod utils;
 mod pawn;
 
 use crate::board::piece::Piece;
