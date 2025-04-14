@@ -1,3 +1,4 @@
+use crate::board::color::Color;
 use crate::board::constants::INITIAL_BOARD;
 use crate::board::piece::{Piece, PieceType};
 
@@ -44,7 +45,10 @@ impl Board {
                     self.set_piece(from, &Piece {
                         color: piece.color,
                         piece_type: PieceType::Pawn {
-                            double_push,
+                            double_push: double_push || match piece.color {
+                                Color::Black => from.1 == 1 && to.1 == 3,
+                                Color::White => from.1 == 6 && to.1 == 4,
+                            },
                             has_moved: true
                         },
                     });
