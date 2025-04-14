@@ -28,7 +28,7 @@ impl Board {
         self.set_data(x, y, piece.to_u8());
     }
 
-    fn get_data(&mut self, x: usize, y: usize) -> u8 {
+    fn get_data(&self, x: usize, y: usize) -> u8 {
         self.data[y + 2usize][x + 1usize]
     }
 
