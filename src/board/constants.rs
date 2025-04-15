@@ -81,7 +81,7 @@ pub const INITIAL_BOARD: [[u8; 12]; 12] = [
     [255u8; 12]
 ];
 
-pub const _PIECES: [(Piece, u8); 26] = [
+pub const _PIECES: [(Piece, u8); 22] = [
     (
         Piece {
             color: Color::White,
@@ -102,24 +102,6 @@ pub const _PIECES: [(Piece, u8); 26] = [
     ),
     (
         Piece {
-            color: Color::White,
-            piece_type: PieceType::Pawn {
-                has_moved: false,
-            }
-        },
-        0b00010001u8,
-    ),
-    (
-        Piece {
-            color: Color::White,
-            piece_type: PieceType::Pawn {
-                has_moved: true,
-            }
-        },
-        0b00011001u8,
-    ),
-    (
-        Piece {
             color: Color::Black,
             piece_type: PieceType::Pawn {
                 has_moved: false,
@@ -135,24 +117,6 @@ pub const _PIECES: [(Piece, u8); 26] = [
             }
         },
         0b10001001u8,
-    ),
-    (
-        Piece {
-            color: Color::Black,
-            piece_type: PieceType::Pawn {
-                has_moved: false,
-            }
-        },
-        0b10010001u8,
-    ),
-    (
-        Piece {
-            color: Color::Black,
-            piece_type: PieceType::Pawn {
-                has_moved: true,
-            }
-        },
-        0b10011001u8,
     ),
     (
         Piece {
