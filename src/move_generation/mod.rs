@@ -1,10 +1,7 @@
-mod pawn;
-mod knight;
-mod bishop;
 mod utils;
-mod rook;
-mod queen;
+mod pieces;
 
+use pieces::{bishop, knight, pawn, queen, rook};
 use crate::board::piece::PieceType;
 use crate::board::Board;
 
