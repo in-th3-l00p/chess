@@ -66,7 +66,11 @@ impl Board {
                 PieceType::Pawn { .. } => {
                     // check for en passant
                     let delta = if let Color::White = piece.color { -1 } else { 1 };
-                    if to.1 == from.1 + delta && (from.0 + 1 == to.0 || from.0 - 1 == to.0) {
+                    if
+                        to.1 == from.1 + delta &&
+                        (from.0 + 1 == to.0 || from.0 - 1 == to.0) &&
+                        self.get_data(to) == 0u8
+                    {
                         self.set_data((to.0, to.1 - delta), 0u8);
                     }
                     self.set_piece(from, &Piece {
