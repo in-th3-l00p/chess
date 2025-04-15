@@ -36,12 +36,17 @@ impl Board {
     pub fn move_piece(
         &mut self,
         from: (i32, i32),
-        to: (i32, i32)
+        mut to: (i32, i32)
     ) {
         // marking has_moved
         if let Some(piece) = self.get_piece(from) {
             match piece.piece_type {
                 PieceType::Pawn { double_push, .. } => {
+                    // check for en passant
+                    if from.1 == to.1 {
+                        self.set_data(to, 0u8);
+                        to.1 += if let Color::White = piece.color { -1 } else { 1 };
+                    }
                     self.set_piece(from, &Piece {
                         color: piece.color,
                         piece_type: PieceType::Pawn {
