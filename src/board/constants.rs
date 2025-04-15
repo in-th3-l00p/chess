@@ -78,7 +78,6 @@ pub const _PIECES: [(Piece, u8); 26] = [
         Piece {
             color: Color::White,
             piece_type: PieceType::Pawn {
-                double_push: false,
                 has_moved: false,
             }
         },
@@ -88,7 +87,6 @@ pub const _PIECES: [(Piece, u8); 26] = [
         Piece {
             color: Color::White,
             piece_type: PieceType::Pawn {
-                double_push: false,
                 has_moved: true,
             }
         },
@@ -98,7 +96,6 @@ pub const _PIECES: [(Piece, u8); 26] = [
         Piece {
             color: Color::White,
             piece_type: PieceType::Pawn {
-                double_push: true,
                 has_moved: false,
             }
         },
@@ -108,7 +105,6 @@ pub const _PIECES: [(Piece, u8); 26] = [
         Piece {
             color: Color::White,
             piece_type: PieceType::Pawn {
-                double_push: true,
                 has_moved: true,
             }
         },
@@ -118,7 +114,6 @@ pub const _PIECES: [(Piece, u8); 26] = [
         Piece {
             color: Color::Black,
             piece_type: PieceType::Pawn {
-                double_push: false,
                 has_moved: false,
             }
         },
@@ -128,7 +123,6 @@ pub const _PIECES: [(Piece, u8); 26] = [
         Piece {
             color: Color::Black,
             piece_type: PieceType::Pawn {
-                double_push: false,
                 has_moved: true,
             }
         },
@@ -138,7 +132,6 @@ pub const _PIECES: [(Piece, u8); 26] = [
         Piece {
             color: Color::Black,
             piece_type: PieceType::Pawn {
-                double_push: true,
                 has_moved: false,
             }
         },
@@ -148,7 +141,6 @@ pub const _PIECES: [(Piece, u8); 26] = [
         Piece {
             color: Color::Black,
             piece_type: PieceType::Pawn {
-                double_push: true,
                 has_moved: true,
             }
         },

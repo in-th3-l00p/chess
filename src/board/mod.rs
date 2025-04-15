@@ -6,14 +6,28 @@ pub mod piece;
 pub mod color;
 mod constants;
 
+#[derive(Eq, PartialEq)]
+pub struct BoardMove {
+    pub from: (i32, i32),
+    pub to: (i32, i32),
+}
+
+impl BoardMove {
+    pub fn new(from: (i32, i32), to: (i32, i32)) -> BoardMove {
+        BoardMove { from, to }
+    }
+}
+
 pub struct Board {
-    data: [[u8; 10]; 12]
+    data: [[u8; 10]; 12],
+    last_move: Option<BoardMove>,
 }
 
 impl Board {
     pub fn new() -> Board {
         Board {
             data: INITIAL_BOARD,
+            last_move: None,
         }
     }
 
@@ -33,6 +47,10 @@ impl Board {
         self.data[(coords.1 + 2) as usize][(coords.0 + 1) as usize] = piece;
     }
 
+    pub fn get_last_move(&self) -> &Option<BoardMove> {
+        &self.last_move
+    }
+
     pub fn move_piece(
         &mut self,
         from: (i32, i32),
@@ -41,7 +59,7 @@ impl Board {
         // marking has_moved
         if let Some(piece) = self.get_piece(from) {
             match piece.piece_type {
-                PieceType::Pawn { double_push, .. } => {
+                PieceType::Pawn { .. } => {
                     // check for en passant
                     let delta = if let Color::White = piece.color { -1 } else { 1 };
                     if to.1 == from.1 + delta && (from.0 + 1 == to.0 || from.0 - 1 == to.0) {
@@ -50,10 +68,6 @@ impl Board {
                     self.set_piece(from, &Piece {
                         color: piece.color,
                         piece_type: PieceType::Pawn {
-                            double_push: double_push || match piece.color {
-                                Color::Black => from.1 == 1 && to.1 == 3,
-                                Color::White => from.1 == 6 && to.1 == 4,
-                            },
                             has_moved: true
                         },
                     });
@@ -79,6 +93,7 @@ impl Board {
             }
         }
 
+        self.last_move = Some(BoardMove { from, to });
         self.set_data(to, self.get_data(from));
         self.set_data(from, 0u8);
     }

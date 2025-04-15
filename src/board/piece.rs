@@ -10,7 +10,6 @@ pub struct Piece {
 #[derive(Debug)]
 pub enum PieceType {
     Pawn {
-        double_push: bool,
         has_moved: bool,
     },
     Knight,
@@ -44,11 +43,9 @@ impl Piece {
     fn get_data_bitmask(&self) -> u8 {
         self.color.get_bitmask() | match self.piece_type {
             PieceType::Pawn {
-                double_push,
                 has_moved,
             } => {
                 (if has_moved { 0b00001000u8 } else { 0u8 })
-                    | (if double_push { 0b00010000u8 } else { 0u8 })
             }
             PieceType::Rook { has_moved } => {
                 if has_moved { 0b00001000u8 } else { 0u8 }
@@ -79,11 +76,9 @@ impl Piece {
         let color = Color::from_u8(val);
         let castling = if val & 0b00010000u8 > 0 { true } else { false };
         let has_moved = if val & 0b00001000u8 > 0 { true } else { false };
-        let double_push = if val & 0b00010000u8 > 0 { true } else { false };
 
         let piece_type = match val & 0b00000111u8 {
             1u8 => Some(PieceType::Pawn {
-                double_push,
                 has_moved,
             }),
             2u8 => Some(PieceType::Knight),
