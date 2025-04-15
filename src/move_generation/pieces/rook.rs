@@ -1,6 +1,6 @@
 use crate::board::Board;
 use crate::board::piece::Piece;
-use crate::move_generation::utils::generate_continious;
+use crate::move_generation::utils::generate_continuous;
 
 const ROOK_OFFSETS: [(i32, i32); 4] = [
     (1, 0),
@@ -15,5 +15,5 @@ pub fn generate(
     pos: &(i32, i32),
     piece: &Piece
 ) {
-    generate_continious(board, moves, pos, piece, &ROOK_OFFSETS);
+    generate_continuous(board, moves, pos, piece, &ROOK_OFFSETS);
 }

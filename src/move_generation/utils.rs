@@ -32,3 +32,17 @@ pub fn generate_continuous(
     }
 }
 
+pub fn add_move(
+    board: &Board,
+    moves: &mut Vec<(i32, i32)>,
+    added_pos: (i32, i32),
+    piece: &Piece
+) {
+    if let Some(capture) = board.get_piece(added_pos) {
+        if capture.color != piece.color {
+            moves.push(added_pos);
+        }
+    } else {
+        moves.push(added_pos);
+    }
+}

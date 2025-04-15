@@ -1,5 +1,6 @@
 use crate::board::piece::Piece;
 use crate::board::Board;
+use crate::move_generation::utils::add_move;
 
 const DIRECTIONS: [(i32, i32); 8] = [
     (1, 0),
@@ -19,13 +20,11 @@ pub fn generate(
     piece: &Piece
 ) {
     for direction in DIRECTIONS.iter() {
-        let next_pos = (pos.0 + direction.0, pos.1 + direction.1);
-        if let Some(capture) = board.get_piece(next_pos) {
-            if capture.color != piece.color {
-                moves.push(next_pos);
-            }
-        } else {
-            moves.push(next_pos);
-        }
+        add_move(
+            board,
+            moves,
+            (pos.0 + direction.0, pos.1 + direction.1),
+            piece
+        );
     }
 }
