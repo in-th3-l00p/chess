@@ -45,7 +45,7 @@ impl Piece {
             PieceType::Pawn {
                 has_moved,
             } => {
-                (if has_moved { 0b00001000u8 } else { 0u8 })
+                if has_moved { 0b00001000u8 } else { 0u8 }
             }
             PieceType::Rook { has_moved } => {
                 if has_moved { 0b00001000u8 } else { 0u8 }
