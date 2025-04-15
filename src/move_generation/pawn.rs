@@ -8,18 +8,19 @@ fn check_en_passant(
     moves: &mut Vec<(i32, i32)>,
     pos: &(i32, i32),
     piece: &Piece,
+    delta: &i32
 ) {
     if let Some(right_en_passant) = board.get_piece((pos.0 + 1, pos.1)) {
         if let Pawn { double_push, .. } = right_en_passant.piece_type {
             if right_en_passant.color != piece.color && double_push {
-                moves.push((pos.0 + 1, pos.1));
+                moves.push((pos.0 + 1, pos.1 + delta));
             }
         }
     }
     if let Some(left_en_passant) = board.get_piece((pos.0 - 1, pos.1)) {
         if let Pawn { double_push, .. } = left_en_passant.piece_type {
             if left_en_passant.color != piece.color && double_push {
-                moves.push((pos.0 - 1, pos.1));
+                moves.push((pos.0 - 1, pos.1 + delta));
             }
         }
     }
@@ -65,12 +66,12 @@ pub fn generate(
     match piece.color {
         Color::White => {
             if pos.1 == 3 {
-                check_en_passant(board, moves, pos, piece);
+                check_en_passant(board, moves, pos, piece, &delta);
             }
         },
         Color::Black => {
             if pos.1 == 4 {
-                check_en_passant(board, moves, pos, piece);
+                check_en_passant(board, moves, pos, piece, &delta);
             }
         }
     }
