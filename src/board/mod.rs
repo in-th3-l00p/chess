@@ -19,7 +19,7 @@ impl BoardMove {
 }
 
 pub struct Board {
-    data: [[u8; 10]; 12],
+    data: [[u8; 12]; 12],
     last_move: Option<BoardMove>,
 }
 
@@ -32,7 +32,7 @@ impl Board {
     }
 
     pub fn get_piece(&self, coords: (i32, i32)) -> Option<Piece> {
-        Piece::from_u8(self.data[(coords.1 + 2) as usize][(coords.0 + 1) as usize])
+        Piece::from_u8(self.data[(coords.1 + 2) as usize][(coords.0 + 2) as usize])
     }
 
     pub fn set_piece(&mut self, coords: (i32, i32), piece: &Piece) {
@@ -40,11 +40,11 @@ impl Board {
     }
 
     fn get_data(&self, coords: (i32, i32)) -> u8 {
-        self.data[(coords.1 + 2) as usize][(coords.0 + 1) as usize]
+        self.data[(coords.1 + 2) as usize][(coords.0 + 2) as usize]
     }
 
     fn set_data(&mut self, coords: (i32, i32),  piece: u8) {
-        self.data[(coords.1 + 2) as usize][(coords.0 + 1) as usize] = piece;
+        self.data[(coords.1 + 2) as usize][(coords.0 + 2) as usize] = piece;
     }
 
     pub fn get_last_move(&self) -> &Option<BoardMove> {

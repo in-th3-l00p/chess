@@ -1,7 +1,8 @@
 use crate::board::color::Color;
 use crate::board::piece::{Piece, PieceType};
 
-const RANK_8: [u8; 10] = [
+const RANK_8: [u8; 12] = [
+    255u8,
     255u8,
     0b10000100u8,
     0b10000010u8,
@@ -12,9 +13,11 @@ const RANK_8: [u8; 10] = [
     0b10000010u8,
     0b10000100u8,
     255u8,
+    255u8,
 ];
 
-const RANK_7: [u8; 10] = [
+const RANK_7: [u8; 12] = [
+    255u8,
     255u8,
     0b10000001u8,
     0b10000001u8,
@@ -25,14 +28,16 @@ const RANK_7: [u8; 10] = [
     0b10000001u8,
     0b10000001u8,
     255u8,
+    255u8,
 ];
 
-const EMPTY_RANK: [u8; 10] = [
-    255u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 255u8
+const EMPTY_RANK: [u8; 12] = [
+    255u8, 255u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 255u8, 255u8
 ];
 
 
-const RANK_2: [u8; 10] = [
+const RANK_2: [u8; 12] = [
+    255u8,
     255u8,
     0b00000001u8,
     0b00000001u8,
@@ -43,9 +48,11 @@ const RANK_2: [u8; 10] = [
     0b00000001u8,
     0b00000001u8,
     255u8,
+    255u8,
 ];
 
-const RANK_1: [u8; 10] = [
+const RANK_1: [u8; 12] = [
+    255u8,
     255u8,
     0b00000100u8,
     0b00000010u8,
@@ -55,12 +62,13 @@ const RANK_1: [u8; 10] = [
     0b00000011u8,
     0b00000010u8,
     0b00000100u8,
-    255u8
+    255u8,
+    255u8,
 ];
 
-pub const INITIAL_BOARD: [[u8; 10]; 12] = [
-    [255u8; 10],
-    [255u8; 10],
+pub const INITIAL_BOARD: [[u8; 12]; 12] = [
+    [255u8; 12],
+    [255u8; 12],
     RANK_8,
     RANK_7,
     EMPTY_RANK,
@@ -69,8 +77,8 @@ pub const INITIAL_BOARD: [[u8; 10]; 12] = [
     EMPTY_RANK,
     RANK_2,
     RANK_1,
-    [255u8; 10],
-    [255u8; 10]
+    [255u8; 12],
+    [255u8; 12]
 ];
 
 pub const _PIECES: [(Piece, u8); 26] = [

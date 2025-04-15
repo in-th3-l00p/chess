@@ -12,9 +12,16 @@ pub fn generate(
     board: &Board,
     moves: &mut Vec<(i32, i32)>,
     pos: &(i32, i32),
-    piece: &Piece,
+    piece: &Piece
 ) {
     for offset in KNIGHT_OFFSETS {
-        moves.push((pos.0 + offset.0, pos.1 + offset.1));
+        let new_pos = (pos.0 + offset.0, pos.1 + offset.1);
+        if let Some(capture) = board.get_piece(new_pos) {
+            if capture.color != piece.color {
+                moves.push(new_pos);
+            }
+        } else {
+            moves.push(new_pos);
+        }
     }
 }
