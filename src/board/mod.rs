@@ -51,6 +51,10 @@ impl Board {
         &self.last_move
     }
 
+    pub fn is_in_bounds(&self, coords: (i32, i32)) -> bool {
+        self.get_data(coords) != 255u8
+    }
+
     pub fn move_piece(
         &mut self,
         from: (i32, i32),

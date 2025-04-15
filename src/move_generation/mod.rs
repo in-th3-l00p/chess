@@ -1,5 +1,6 @@
 mod pawn;
 mod knight;
+mod bishop;
 
 use crate::board::piece::PieceType;
 use crate::board::Board;
@@ -13,6 +14,8 @@ pub fn generate_possible_moves(board: &Board, pos: (i32, i32)) -> Vec<(i32, i32)
                 pawn::generate(board, &mut moves, &pos, &piece),
             PieceType::Knight{..} =>
                 knight::generate(board, &mut moves, &pos, &piece),
+            PieceType::Bishop{..} =>
+                bishop::generate(board, &mut moves, &pos, &piece),
             _ => {},
         }
     }
