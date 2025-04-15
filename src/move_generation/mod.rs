@@ -1,6 +1,7 @@
 mod pawn;
 mod knight;
 mod bishop;
+mod utils;
 
 use crate::board::piece::PieceType;
 use crate::board::Board;
