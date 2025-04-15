@@ -1,7 +1,7 @@
 use crate::board::Board;
 use crate::board::piece::Piece;
 
-pub fn generate_continious(
+pub fn generate_continuous(
     board: &Board,
     moves: &mut Vec<(i32, i32)>,
     pos: &(i32, i32),
@@ -31,3 +31,4 @@ pub fn generate_continious(
         }
     }
 }
+
