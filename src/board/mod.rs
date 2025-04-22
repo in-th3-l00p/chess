@@ -88,7 +88,18 @@ impl Board {
                         },
                     });
                 },
-                PieceType::King { castling, .. } => {
+                PieceType::King { has_moved, castling } => {
+                    // check for castling
+                    if !has_moved && to.1 == from.1 {
+                        if to.0 == 6 {
+                            self.set_data((5, from.1), self.get_data((7, from.1)) | 0b00001000u8);
+                            self.set_data((7, from.1), 0u8);
+                        } else if to.0 == 2 {
+                            self.set_data((3, from.1), self.get_data((0, from.1)) | 0b00001000u8);
+                            self.set_data((0, from.1), 0u8);
+                        }
+                    }
+
                     self.set_piece(from, &Piece {
                         color: piece.color,
                         piece_type: PieceType::King {
