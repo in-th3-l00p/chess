@@ -8,6 +8,7 @@ use macroquad::input::{is_mouse_button_down, is_mouse_button_released, mouse_pos
 use macroquad::math::vec2;
 use macroquad::prelude::{clear_background, next_frame, Color};
 use macroquad::ui::{root_ui, widgets};
+use crate::board::piece::PieceType;
 
 fn get_selected_square() -> (i32, i32) {
     (
@@ -92,7 +93,7 @@ const PROMOTE_WINDOW_WIDTH: f32 = 178.;
 const PROMOTE_WINDOW_HEIGHT: f32 = 40.;
 
 pub async fn ui(state: &mut GameState) {
-    if state.promote_pos.is_some() {
+    if let Some(promote_pos) = state.promote_pos {
         widgets::Window::new(
             hash!(),
             vec2(
@@ -105,17 +106,33 @@ pub async fn ui(state: &mut GameState) {
             .titlebar(true)
             .movable(false)
             .ui(&mut *root_ui(), |ui| {
-                widgets::Button::new("Queen")
-                    .ui(ui);
+                let mut piece = state
+                    .board
+                    .get_piece(promote_pos)
+                    .unwrap();
+                if widgets::Button::new("Queen").ui(ui) {
+                    piece.piece_type = PieceType::Queen;
+                    state.board.set_piece(promote_pos, &piece);
+                    state.promote_pos = None;
+                }
                 ui.same_line(0.);
-                widgets::Button::new("Rook")
-                    .ui(ui);
+                if widgets::Button::new("Rook").ui(ui) {
+                    piece.piece_type = PieceType::Rook { has_moved: true };
+                    state.board.set_piece(promote_pos, &piece);
+                    state.promote_pos = None;
+                }
                 ui.same_line(0.);
-                widgets::Button::new("Bishop")
-                    .ui(ui);
+                if widgets::Button::new("Bishop").ui(ui) {
+                    piece.piece_type = PieceType::Bishop;
+                    state.board.set_piece(promote_pos, &piece);
+                    state.promote_pos = None;
+                }
                 ui.same_line(0.);
-                widgets::Button::new("Knight")
-                    .ui(ui);
+                if widgets::Button::new("Knight").ui(ui) {
+                    piece.piece_type = PieceType::Knight;
+                    state.board.set_piece(promote_pos, &piece);
+                    state.promote_pos = None;
+                }
             });
     }
 }
