@@ -29,15 +29,21 @@ pub async fn update(state: &mut GameState) {
                 possible_move.to == selected_square
             })
         {
-            state.board.move_piece(
+            let possible_move =
                 state.possible_moves
                     .as_ref()
                     .unwrap()
                     .iter()
-                    .find(|possible_move| { possible_move.to == selected_square })
+                    .find(|possible_move| {
+                        possible_move.to == selected_square
+                    })
                     .unwrap()
-                    .clone()
-            );
+                    .clone();
+            if possible_move.promote.is_some() {
+                // should open the dialog before making the move
+            } else {
+                state.board.move_piece(possible_move);
+            }
             state.selected_piece = None;
             state.possible_moves = None;
             state.preview_piece = None;

@@ -1,6 +1,6 @@
 use crate::board::color::Color;
 use crate::board::piece::PieceType::Pawn;
-use crate::board::piece::Piece;
+use crate::board::piece::{Piece, PieceType};
 use crate::board::{Board};
 use crate::move_generation::BoardMove;
 
@@ -44,6 +44,21 @@ fn check_en_passant(
     }
 }
 
+fn add_with_promote_check(
+    moves: &mut Vec<BoardMove>,
+    pos: (i32, i32),
+    next_pos: (i32, i32)
+) {
+    if next_pos.1 == 0 || next_pos.1 == 7 {
+        moves.push(BoardMove::new(pos, next_pos, Some(PieceType::Queen)));
+        moves.push(BoardMove::new(pos, next_pos, Some(PieceType::Rook { has_moved: true })));
+        moves.push(BoardMove::new(pos, next_pos, Some(PieceType::Bishop)));
+        moves.push(BoardMove::new(pos, next_pos, Some(PieceType::Knight)));
+    } else {
+        moves.push(BoardMove::new(pos, next_pos, None));
+    }
+}
+
 pub fn generate(
     board: &Board,
     moves: &mut Vec<BoardMove>,
@@ -54,18 +69,18 @@ pub fn generate(
 
     // single push
     if board.get_piece((pos.0, pos.1 + delta)).is_none() {
-        moves.push(BoardMove::new(pos, (pos.0, pos.1 + delta), None));
+       add_with_promote_check(moves, pos, (pos.0, pos.1 + delta));
     }
 
     // captures
     if let Some(right_capture) = board.get_piece((pos.0 + 1, pos.1 + delta)) {
         if right_capture.color != piece.color {
-            moves.push(BoardMove::new(pos, (pos.0 + 1, pos.1 + delta), None));
+            add_with_promote_check(moves, pos, (pos.0 + 1, pos.1 + delta));
         }
     }
     if let Some(left_capture) = board.get_piece((pos.0 - 1, pos.1 + delta)) {
         if left_capture.color != piece.color {
-            moves.push(BoardMove::new(pos, (pos.0 - 1, pos.1 + delta), None));
+            add_with_promote_check(moves, pos, (pos.0 - 1, pos.1 + delta));
         }
     }
 
