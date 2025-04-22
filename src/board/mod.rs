@@ -1,7 +1,7 @@
 use crate::board::color::Color;
 use crate::board::constants::INITIAL_BOARD;
 use crate::board::piece::{Piece, PieceType};
-use crate::move_generation::Move;
+use crate::move_generation::BoardMove;
 
 pub mod piece;
 pub mod color;
@@ -9,7 +9,7 @@ mod constants;
 
 pub struct Board {
     data: [[u8; 12]; 12],
-    last_move: Option<Move>,
+    last_move: Option<BoardMove>,
 }
 
 impl Board {
@@ -36,7 +36,7 @@ impl Board {
         self.data[(coords.1 + 2) as usize][(coords.0 + 2) as usize] = piece;
     }
 
-    pub fn get_last_move(&self) -> &Option<Move> {
+    pub fn get_last_move(&self) -> &Option<BoardMove> {
         &self.last_move
     }
 
@@ -46,7 +46,7 @@ impl Board {
 
     pub fn move_piece(
         &mut self,
-        board_move: Move,
+        board_move: BoardMove,
     ) {
         // marking has_moved
         if let Some(piece) = self.get_piece(board_move.from) {

@@ -2,25 +2,25 @@ use crate::board::color::Color;
 use crate::board::piece::PieceType::Pawn;
 use crate::board::piece::Piece;
 use crate::board::{Board};
-use crate::move_generation::Move;
+use crate::move_generation::BoardMove;
 
 fn check_en_passant(
     board: &Board,
-    moves: &mut Vec<Move>,
-    pos: &(i32, i32),
+    moves: &mut Vec<BoardMove>,
+    pos: (i32, i32),
     piece: &Piece,
     forward_delta: &i32
 ) {
     if let Some(last_move) = board.get_last_move() {
         let en_passant_delta =
             if
-                *last_move == Move::new(
+                *last_move == BoardMove::new(
                     (pos.0 + 1, pos.1 + forward_delta * 2),
                     (pos.0 + 1, pos.1),
                     None
                 ) { 1 }
             else if
-                *last_move == Move::new(
+                *last_move == BoardMove::new(
                     (pos.0 - 1, pos.1 + forward_delta * 2),
                     (pos.0 - 1, pos.1),
                     None
@@ -33,7 +33,7 @@ fn check_en_passant(
             ) {
                 if en_passant.color != piece.color {
                     if let Pawn { .. } = en_passant.piece_type {
-                        moves.push(Move::new(pos.clone(), (
+                        moves.push(BoardMove::new(pos, (
                             pos.0 + en_passant_delta,
                             pos.1 + forward_delta
                         ), None));
@@ -46,26 +46,26 @@ fn check_en_passant(
 
 pub fn generate(
     board: &Board,
-    moves: &mut Vec<Move>,
-    pos: &(i32, i32),
+    moves: &mut Vec<BoardMove>,
+    pos: (i32, i32),
     piece: &Piece,
 ) {
     let delta = if let Color::White = piece.color { -1 } else { 1 };
 
     // single push
     if board.get_piece((pos.0, pos.1 + delta)).is_none() {
-        moves.push(Move::new(pos.clone(), (pos.0, pos.1 + delta), None));
+        moves.push(BoardMove::new(pos, (pos.0, pos.1 + delta), None));
     }
 
     // captures
     if let Some(right_capture) = board.get_piece((pos.0 + 1, pos.1 + delta)) {
         if right_capture.color != piece.color {
-            moves.push(Move::new(pos.clone(), (pos.0 + 1, pos.1 + delta), None));
+            moves.push(BoardMove::new(pos, (pos.0 + 1, pos.1 + delta), None));
         }
     }
     if let Some(left_capture) = board.get_piece((pos.0 - 1, pos.1 + delta)) {
         if left_capture.color != piece.color {
-            moves.push(Move::new(pos.clone(), (pos.0 - 1, pos.1 + delta), None));
+            moves.push(BoardMove::new(pos, (pos.0 - 1, pos.1 + delta), None));
         }
     }
 
@@ -76,7 +76,7 @@ pub fn generate(
             board.get_piece((pos.0, pos.1 + delta)).is_none() &&
             board.get_piece((pos.0, pos.1 + 2 * delta)).is_none()
         {
-            moves.push(Move::new(pos.clone(), (pos.0, pos.1 + 2 * delta), None));
+            moves.push(BoardMove::new(pos, (pos.0, pos.1 + 2 * delta), None));
         }
     }
 
