@@ -17,6 +17,6 @@ pub fn generate(
     piece: &Piece
 ) {
     for offset in KNIGHT_OFFSETS {
-        add_move(board, moves, (pos.0 + offset.0, pos.1 + offset.1), piece);
+        add_move(board, moves, pos.clone(), (pos.0 + offset.0, pos.1 + offset.1), piece);
     }
 }

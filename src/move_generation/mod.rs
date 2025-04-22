@@ -6,14 +6,20 @@ use crate::board::piece::PieceType;
 use crate::board::Board;
 use crate::move_generation::pieces::king;
 
+#[derive(Clone, Eq, PartialEq)]
 pub struct Move {
+    pub from: (i32, i32),
     pub to: (i32, i32),
     pub promote: Option<PieceType>,
 }
 
 impl Move {
-    pub fn new(to: (i32, i32), promote: Option<PieceType>) -> Move {
-        Move { to, promote }
+    pub fn new(
+        from: (i32, i32),
+        to: (i32, i32),
+        promote: Option<PieceType>
+    ) -> Move {
+        Move { from, to, promote }
     }
 }
 

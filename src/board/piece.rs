@@ -7,7 +7,7 @@ pub struct Piece {
     pub(crate) piece_type: PieceType
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub enum PieceType {
     Pawn {
         has_moved: bool,

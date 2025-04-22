@@ -30,8 +30,13 @@ pub async fn update(state: &mut GameState) {
             })
         {
             state.board.move_piece(
-                state.selected_piece.unwrap(),
-                selected_square
+                state.possible_moves
+                    .as_ref()
+                    .unwrap()
+                    .iter()
+                    .find(|possible_move| { possible_move.to == selected_square })
+                    .unwrap()
+                    .clone()
             );
             state.selected_piece = None;
             state.possible_moves = None;

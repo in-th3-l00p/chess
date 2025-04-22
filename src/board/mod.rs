@@ -1,26 +1,15 @@
 use crate::board::color::Color;
 use crate::board::constants::INITIAL_BOARD;
 use crate::board::piece::{Piece, PieceType};
+use crate::move_generation::Move;
 
 pub mod piece;
 pub mod color;
 mod constants;
 
-#[derive(Eq, PartialEq)]
-pub struct BoardMove {
-    pub from: (i32, i32),
-    pub to: (i32, i32),
-}
-
-impl BoardMove {
-    pub fn new(from: (i32, i32), to: (i32, i32)) -> BoardMove {
-        BoardMove { from, to }
-    }
-}
-
 pub struct Board {
     data: [[u8; 12]; 12],
-    last_move: Option<BoardMove>,
+    last_move: Option<Move>,
 }
 
 impl Board {
@@ -47,7 +36,7 @@ impl Board {
         self.data[(coords.1 + 2) as usize][(coords.0 + 2) as usize] = piece;
     }
 
-    pub fn get_last_move(&self) -> &Option<BoardMove> {
+    pub fn get_last_move(&self) -> &Option<Move> {
         &self.last_move
     }
 
@@ -57,23 +46,28 @@ impl Board {
 
     pub fn move_piece(
         &mut self,
-        from: (i32, i32),
-        to: (i32, i32)
+        board_move: Move,
     ) {
         // marking has_moved
-        if let Some(piece) = self.get_piece(from) {
+        if let Some(piece) = self.get_piece(board_move.from) {
             match piece.piece_type {
                 PieceType::Pawn { .. } => {
                     // check for en passant
                     let delta = if let Color::White = piece.color { -1 } else { 1 };
                     if
-                        to.1 == from.1 + delta &&
-                        (from.0 + 1 == to.0 || from.0 - 1 == to.0) &&
-                        self.get_data(to) == 0u8
+                        board_move.to.1 == board_move.from.1 + delta &&
+                        (
+                            board_move.from.0 + 1 == board_move.to.0 ||
+                            board_move.from.0 - 1 == board_move.to.0
+                        ) &&
+                        self.get_data(board_move.to) == 0u8
                     {
-                        self.set_data((to.0, to.1 - delta), 0u8);
+                        self.set_data(
+                            (board_move.to.0, board_move.to.1 - delta),
+                            0u8
+                        );
                     }
-                    self.set_piece(from, &Piece {
+                    self.set_piece(board_move.from, &Piece {
                         color: piece.color,
                         piece_type: PieceType::Pawn {
                             has_moved: true
@@ -81,7 +75,7 @@ impl Board {
                     });
                 },
                 PieceType::Rook { .. } => {
-                    self.set_piece(from, &Piece {
+                    self.set_piece(board_move.from, &Piece {
                         color: piece.color,
                         piece_type: PieceType::Rook {
                             has_moved: true
@@ -90,17 +84,23 @@ impl Board {
                 },
                 PieceType::King { has_moved, castling } => {
                     // check for castling
-                    if !has_moved && to.1 == from.1 {
-                        if to.0 == 6 {
-                            self.set_data((5, from.1), self.get_data((7, from.1)) | 0b00001000u8);
-                            self.set_data((7, from.1), 0u8);
-                        } else if to.0 == 2 {
-                            self.set_data((3, from.1), self.get_data((0, from.1)) | 0b00001000u8);
-                            self.set_data((0, from.1), 0u8);
+                    if !has_moved && board_move.to.1 == board_move.from.1 {
+                        if board_move.to.0 == 6 {
+                            self.set_data(
+                                (5, board_move.from.1),
+                                self.get_data((7, board_move.from.1)) | 0b00001000u8
+                            );
+                            self.set_data((7, board_move.from.1), 0u8);
+                        } else if board_move.to.0 == 2 {
+                            self.set_data(
+                                (3, board_move.from.1),
+                                self.get_data((0, board_move.from.1)) | 0b00001000u8
+                            );
+                            self.set_data((0, board_move.from.1), 0u8);
                         }
                     }
 
-                    self.set_piece(from, &Piece {
+                    self.set_piece(board_move.from, &Piece {
                         color: piece.color,
                         piece_type: PieceType::King {
                             castling,
@@ -112,9 +112,9 @@ impl Board {
             }
         }
 
-        self.last_move = Some(BoardMove { from, to });
-        self.set_data(to, self.get_data(from));
-        self.set_data(from, 0u8);
+        self.last_move = Some(board_move.clone());
+        self.set_data(board_move.to, self.get_data(board_move.from));
+        self.set_data(board_move.from, 0u8);
     }
 }
 

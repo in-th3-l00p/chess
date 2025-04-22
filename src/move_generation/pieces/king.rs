@@ -24,6 +24,7 @@ pub fn generate(
         add_move(
             board,
             moves,
+            pos.clone(),
             (pos.0 + direction.0, pos.1 + direction.1),
             piece
         );
@@ -38,7 +39,7 @@ pub fn generate(
                 if let Some(potential_rook) = board.get_piece((7, pos.1)) {
                     if let PieceType::Rook { has_moved } = potential_rook.piece_type {
                         if !has_moved {
-                            moves.push(Move::new((6, pos.1), None));
+                            moves.push(Move::new(pos.clone(), (6, pos.1), None));
                         }
                     }
                 }
@@ -52,7 +53,7 @@ pub fn generate(
                 if let Some(potential_rook) = board.get_piece((0, pos.1)) {
                     if let PieceType::Rook { has_moved } = potential_rook.piece_type {
                         if !has_moved {
-                            moves.push(Move::new((2, pos.1), None));
+                            moves.push(Move::new(pos.clone(), (2, pos.1), None));
                         }
                     }
                 }
