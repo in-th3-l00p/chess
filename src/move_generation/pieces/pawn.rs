@@ -2,10 +2,11 @@ use crate::board::color::Color;
 use crate::board::piece::PieceType::Pawn;
 use crate::board::piece::Piece;
 use crate::board::{Board, BoardMove};
+use crate::move_generation::Move;
 
 fn check_en_passant(
     board: &Board,
-    moves: &mut Vec<(i32, i32)>,
+    moves: &mut Vec<Move>,
     pos: &(i32, i32),
     piece: &Piece,
     forward_delta: &i32
@@ -30,10 +31,10 @@ fn check_en_passant(
             ) {
                 if en_passant.color != piece.color {
                     if let Pawn { .. } = en_passant.piece_type {
-                        moves.push((
+                        moves.push(Move::new((
                             pos.0 + en_passant_delta,
                             pos.1 + forward_delta
-                        ));
+                        ), None));
                     }
                 }
             }
@@ -43,7 +44,7 @@ fn check_en_passant(
 
 pub fn generate(
     board: &Board,
-    moves: &mut Vec<(i32, i32)>,
+    moves: &mut Vec<Move>,
     pos: &(i32, i32),
     piece: &Piece,
 ) {
@@ -51,18 +52,18 @@ pub fn generate(
 
     // single push
     if board.get_piece((pos.0, pos.1 + delta)).is_none() {
-        moves.push((pos.0, pos.1 + delta));
+        moves.push(Move::new((pos.0, pos.1 + delta), None));
     }
 
     // captures
     if let Some(right_capture) = board.get_piece((pos.0 + 1, pos.1 + delta)) {
         if right_capture.color != piece.color {
-            moves.push((pos.0 + 1, pos.1 + delta));
+            moves.push(Move::new((pos.0 + 1, pos.1 + delta), None));
         }
     }
     if let Some(left_capture) = board.get_piece((pos.0 - 1, pos.1 + delta)) {
         if left_capture.color != piece.color {
-            moves.push((pos.0 - 1, pos.1 + delta));
+            moves.push(Move::new((pos.0 - 1, pos.1 + delta), None));
         }
     }
 
@@ -73,7 +74,7 @@ pub fn generate(
             board.get_piece((pos.0, pos.1 + delta)).is_none() &&
             board.get_piece((pos.0, pos.1 + 2 * delta)).is_none()
         {
-            moves.push((pos.0, pos.1 + 2 * delta));
+            moves.push(Move::new((pos.0, pos.1 + 2 * delta), None));
         }
     }
 

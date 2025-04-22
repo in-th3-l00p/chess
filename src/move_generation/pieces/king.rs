@@ -1,5 +1,6 @@
 use crate::board::piece::{Piece, PieceType};
 use crate::board::Board;
+use crate::move_generation::Move;
 use crate::move_generation::utils::add_move;
 
 const DIRECTIONS: [(i32, i32); 8] = [
@@ -15,7 +16,7 @@ const DIRECTIONS: [(i32, i32); 8] = [
 
 pub fn generate(
     board: &Board,
-    moves: &mut Vec<(i32, i32)>,
+    moves: &mut Vec<Move>,
     pos: &(i32, i32),
     piece: &Piece
 ) {
@@ -37,7 +38,7 @@ pub fn generate(
                 if let Some(potential_rook) = board.get_piece((7, pos.1)) {
                     if let PieceType::Rook { has_moved } = potential_rook.piece_type {
                         if !has_moved {
-                            moves.push((6, pos.1));
+                            moves.push(Move::new((6, pos.1), None));
                         }
                     }
                 }
@@ -51,7 +52,7 @@ pub fn generate(
                 if let Some(potential_rook) = board.get_piece((0, pos.1)) {
                     if let PieceType::Rook { has_moved } = potential_rook.piece_type {
                         if !has_moved {
-                            moves.push((2, pos.1));
+                            moves.push(Move::new((2, pos.1), None));
                         }
                     }
                 }

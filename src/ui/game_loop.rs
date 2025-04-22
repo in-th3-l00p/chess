@@ -3,10 +3,8 @@ use crate::ui::rendering::draw_board;
 use crate::ui::rendering::utils::draw_board_square;
 use crate::ui::{constants, GameState};
 use macroquad::color::BLACK;
-use macroquad::hash;
 use macroquad::input::{is_mouse_button_down, is_mouse_button_released, mouse_position, MouseButton};
-use macroquad::prelude::{clear_background, next_frame, vec2, Color};
-use macroquad::ui::{root_ui, widgets};
+use macroquad::prelude::{clear_background, next_frame, Color};
 
 fn get_selected_square() -> (i32, i32) {
     (
@@ -26,7 +24,10 @@ pub async fn update(state: &mut GameState) {
         if state.possible_moves
             .as_ref()
             .unwrap()
-            .contains(&selected_square)
+            .iter()
+            .any(|possible_move| {
+                possible_move.to == selected_square
+            })
         {
             state.board.move_piece(
                 state.selected_piece.unwrap(),
@@ -44,7 +45,10 @@ pub async fn update(state: &mut GameState) {
                 state.possible_moves
                     .as_ref()
                     .unwrap()
-                    .contains(&selected_square)
+                    .iter()
+                    .any(|possible_move| {
+                        possible_move.to == selected_square
+                    })
             ) {
                 state.selected_piece = None;
                 state.possible_moves = None;
@@ -66,33 +70,34 @@ pub async fn update(state: &mut GameState) {
     }
 }
 
+const PROMOTE_WINDOW_WIDTH: f32 = 178.;
+const PROMOTE_WINDOW_HEIGHT: f32 = 40.;
+
 pub async fn ui(_state: &mut GameState) {
-    const PROMOTE_WINDOW_WIDTH: f32 = 178.;
-    const PROMOTE_WINDOW_HEIGHT: f32 = 40.;
-    widgets::Window::new(
-        hash!(),
-        vec2(
-            constants::window::WINDOW_WIDTH as f32 / 2. - PROMOTE_WINDOW_WIDTH / 2.,
-            constants::window::WINDOW_HEIGHT as f32 / 2. - PROMOTE_WINDOW_HEIGHT / 2.
-        ),
-        vec2(PROMOTE_WINDOW_WIDTH, PROMOTE_WINDOW_HEIGHT)
-    )
-        .label("Promote")
-        .titlebar(true)
-        .movable(false)
-        .ui(&mut *root_ui(), |ui| {
-            widgets::Button::new("Queen")
-                .ui(ui);
-            ui.same_line(0.);
-            widgets::Button::new("Rook")
-                .ui(ui);
-            ui.same_line(0.);
-            widgets::Button::new("Bishop")
-                .ui(ui);
-            ui.same_line(0.);
-            widgets::Button::new("Knight")
-                .ui(ui);
-        });
+    // widgets::Window::new(
+    //     hash!(),
+    //     vec2(
+    //         constants::window::WINDOW_WIDTH as f32 / 2. - PROMOTE_WINDOW_WIDTH / 2.,
+    //         constants::window::WINDOW_HEIGHT as f32 / 2. - PROMOTE_WINDOW_HEIGHT / 2.
+    //     ),
+    //     vec2(PROMOTE_WINDOW_WIDTH, PROMOTE_WINDOW_HEIGHT)
+    // )
+    //     .label("Promote")
+    //     .titlebar(true)
+    //     .movable(false)
+    //     .ui(&mut *root_ui(), |ui| {
+    //         widgets::Button::new("Queen")
+    //             .ui(ui);
+    //         ui.same_line(0.);
+    //         widgets::Button::new("Rook")
+    //             .ui(ui);
+    //         ui.same_line(0.);
+    //         widgets::Button::new("Bishop")
+    //             .ui(ui);
+    //         ui.same_line(0.);
+    //         widgets::Button::new("Knight")
+    //             .ui(ui);
+    //     });
 }
 
 /// used for rendering the current state of the game
@@ -113,7 +118,7 @@ pub async fn render(state: &GameState) {
     if state.possible_moves.is_some() {
         for possible_move in state.possible_moves.as_ref().unwrap() {
             draw_board_square(
-                possible_move.clone(),
+                possible_move.to,
                 Color::from_rgba(0, 0, 0, 50)
             );
         }

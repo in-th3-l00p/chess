@@ -6,7 +6,18 @@ use crate::board::piece::PieceType;
 use crate::board::Board;
 use crate::move_generation::pieces::king;
 
-pub fn generate_possible_moves(board: &Board, pos: (i32, i32)) -> Vec<(i32, i32)> {
+pub struct Move {
+    pub to: (i32, i32),
+    pub promote: Option<PieceType>,
+}
+
+impl Move {
+    pub fn new(to: (i32, i32), promote: Option<PieceType>) -> Move {
+        Move { to, promote }
+    }
+}
+
+pub fn generate_possible_moves(board: &Board, pos: (i32, i32)) -> Vec<Move> {
     let mut moves = Vec::new();
     let piece = board.get_piece(pos);
     if let Some(piece) = piece {

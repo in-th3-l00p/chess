@@ -4,6 +4,7 @@ mod constants;
 
 use crate::board::Board;
 use macroquad::window::Conf;
+use crate::move_generation::Move;
 use crate::ui::rendering::pieces::Textures;
 
 pub fn window_conf() -> Conf {
@@ -23,7 +24,7 @@ struct GameState {
 
     selected_piece: Option<(i32, i32)>,
     preview_piece: Option<(i32, i32)>,
-    possible_moves: Option<Vec<(i32, i32)>>,
+    possible_moves: Option<Vec<Move>>,
 }
 
 pub async fn run() {
