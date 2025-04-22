@@ -4,7 +4,12 @@ use crate::ui::rendering::utils::draw_board_square;
 use crate::ui::{constants, GameState};
 use macroquad::color::BLACK;
 use macroquad::hash;
-use macroquad::input::{is_mouse_button_down, is_mouse_button_released, mouse_position, MouseButton};
+use macroquad::input::{
+    is_mouse_button_down,
+    is_mouse_button_released,
+    mouse_position,
+    MouseButton
+};
 use macroquad::math::vec2;
 use macroquad::prelude::{clear_background, next_frame, Color};
 use macroquad::ui::{root_ui, widgets};
