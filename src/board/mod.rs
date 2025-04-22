@@ -28,6 +28,10 @@ impl Board {
         self.set_data(coords, piece.to_u8());
     }
 
+    pub fn set_empty(&mut self, coords: (i32, i32)) {
+        self.set_data(coords, 0u8);
+    }
+
     fn get_data(&self, coords: (i32, i32)) -> u8 {
         self.data[(coords.1 + 2) as usize][(coords.0 + 2) as usize]
     }

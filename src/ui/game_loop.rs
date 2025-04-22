@@ -3,8 +3,11 @@ use crate::ui::rendering::draw_board;
 use crate::ui::rendering::utils::draw_board_square;
 use crate::ui::{constants, GameState};
 use macroquad::color::BLACK;
+use macroquad::hash;
 use macroquad::input::{is_mouse_button_down, is_mouse_button_released, mouse_position, MouseButton};
+use macroquad::math::vec2;
 use macroquad::prelude::{clear_background, next_frame, Color};
+use macroquad::ui::{root_ui, widgets};
 
 fn get_selected_square() -> (i32, i32) {
     (
@@ -15,6 +18,10 @@ fn get_selected_square() -> (i32, i32) {
 
 /// used for updating the game logics
 pub async fn update(state: &mut GameState) {
+    if state.promote_pos.is_some() {
+        return;
+    }
+
     if
         state.possible_moves.is_some()  &&
         is_mouse_button_released(MouseButton::Left)
@@ -39,11 +46,11 @@ pub async fn update(state: &mut GameState) {
                     })
                     .unwrap()
                     .clone();
+
             if possible_move.promote.is_some() {
-                // should open the dialog before making the move
-            } else {
-                state.board.move_piece(possible_move);
+                state.promote_pos = Some(possible_move.to);
             }
+            state.board.move_piece(possible_move);
             state.selected_piece = None;
             state.possible_moves = None;
             state.preview_piece = None;
@@ -84,31 +91,33 @@ pub async fn update(state: &mut GameState) {
 const PROMOTE_WINDOW_WIDTH: f32 = 178.;
 const PROMOTE_WINDOW_HEIGHT: f32 = 40.;
 
-pub async fn ui(_state: &mut GameState) {
-    // widgets::Window::new(
-    //     hash!(),
-    //     vec2(
-    //         constants::window::WINDOW_WIDTH as f32 / 2. - PROMOTE_WINDOW_WIDTH / 2.,
-    //         constants::window::WINDOW_HEIGHT as f32 / 2. - PROMOTE_WINDOW_HEIGHT / 2.
-    //     ),
-    //     vec2(PROMOTE_WINDOW_WIDTH, PROMOTE_WINDOW_HEIGHT)
-    // )
-    //     .label("Promote")
-    //     .titlebar(true)
-    //     .movable(false)
-    //     .ui(&mut *root_ui(), |ui| {
-    //         widgets::Button::new("Queen")
-    //             .ui(ui);
-    //         ui.same_line(0.);
-    //         widgets::Button::new("Rook")
-    //             .ui(ui);
-    //         ui.same_line(0.);
-    //         widgets::Button::new("Bishop")
-    //             .ui(ui);
-    //         ui.same_line(0.);
-    //         widgets::Button::new("Knight")
-    //             .ui(ui);
-    //     });
+pub async fn ui(state: &mut GameState) {
+    if state.promote_pos.is_some() {
+        widgets::Window::new(
+            hash!(),
+            vec2(
+                constants::window::WINDOW_WIDTH as f32 / 2. - PROMOTE_WINDOW_WIDTH / 2.,
+                constants::window::WINDOW_HEIGHT as f32 / 2. - PROMOTE_WINDOW_HEIGHT / 2.
+            ),
+            vec2(PROMOTE_WINDOW_WIDTH, PROMOTE_WINDOW_HEIGHT)
+        )
+            .label("Promote")
+            .titlebar(true)
+            .movable(false)
+            .ui(&mut *root_ui(), |ui| {
+                widgets::Button::new("Queen")
+                    .ui(ui);
+                ui.same_line(0.);
+                widgets::Button::new("Rook")
+                    .ui(ui);
+                ui.same_line(0.);
+                widgets::Button::new("Bishop")
+                    .ui(ui);
+                ui.same_line(0.);
+                widgets::Button::new("Knight")
+                    .ui(ui);
+            });
+    }
 }
 
 /// used for rendering the current state of the game
