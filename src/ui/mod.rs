@@ -1,5 +1,5 @@
 mod rendering;
-mod logics;
+mod game_loop;
 mod constants;
 
 use crate::board::Board;
@@ -35,7 +35,8 @@ pub async fn run() {
         possible_moves: None,
     };
     loop {
-        logics::update(&mut state).await;
-        logics::render(&state).await;
+        game_loop::update(&mut state).await;
+        game_loop::ui(&mut state).await;
+        game_loop::render(&state).await;
     }
 }

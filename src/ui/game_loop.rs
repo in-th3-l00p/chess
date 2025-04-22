@@ -3,8 +3,10 @@ use crate::ui::rendering::draw_board;
 use crate::ui::rendering::utils::draw_board_square;
 use crate::ui::{constants, GameState};
 use macroquad::color::BLACK;
+use macroquad::hash;
 use macroquad::input::{is_mouse_button_down, is_mouse_button_released, mouse_position, MouseButton};
-use macroquad::prelude::{clear_background, next_frame, Color};
+use macroquad::prelude::{clear_background, next_frame, vec2, Color};
+use macroquad::ui::{root_ui, widgets};
 
 fn get_selected_square() -> (i32, i32) {
     (
@@ -14,7 +16,6 @@ fn get_selected_square() -> (i32, i32) {
 }
 
 /// used for updating the game logics
-/// gets called in the game loop
 pub async fn update(state: &mut GameState) {
     if
         state.possible_moves.is_some()  &&
@@ -65,8 +66,36 @@ pub async fn update(state: &mut GameState) {
     }
 }
 
+pub async fn ui(_state: &mut GameState) {
+    const PROMOTE_WINDOW_WIDTH: f32 = 178.;
+    const PROMOTE_WINDOW_HEIGHT: f32 = 40.;
+    widgets::Window::new(
+        hash!(),
+        vec2(
+            constants::window::WINDOW_WIDTH as f32 / 2. - PROMOTE_WINDOW_WIDTH / 2.,
+            constants::window::WINDOW_HEIGHT as f32 / 2. - PROMOTE_WINDOW_HEIGHT / 2.
+        ),
+        vec2(PROMOTE_WINDOW_WIDTH, PROMOTE_WINDOW_HEIGHT)
+    )
+        .label("Promote")
+        .titlebar(true)
+        .movable(false)
+        .ui(&mut *root_ui(), |ui| {
+            widgets::Button::new("Queen")
+                .ui(ui);
+            ui.same_line(0.);
+            widgets::Button::new("Rook")
+                .ui(ui);
+            ui.same_line(0.);
+            widgets::Button::new("Bishop")
+                .ui(ui);
+            ui.same_line(0.);
+            widgets::Button::new("Knight")
+                .ui(ui);
+        });
+}
+
 /// used for rendering the current state of the game
-/// gets called in the game loop
 pub async fn render(state: &GameState) {
     clear_background(BLACK);
 
