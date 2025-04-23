@@ -16,6 +16,13 @@ impl Color {
             Color::Black => 0b10000000u8
         }
     }
+
+    pub fn inverse(&self) -> Color {
+        match self {
+            Color::Black => Color::White,
+            Color::White => Color::Black
+        }
+    }
 }
 
 #[cfg(test)]

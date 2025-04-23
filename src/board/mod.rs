@@ -7,6 +7,7 @@ pub mod piece;
 pub mod color;
 mod constants;
 
+#[derive(Clone, Eq, PartialEq)]
 pub struct Board {
     data: [[u8; 12]; 12],
     last_move: Option<BoardMove>,

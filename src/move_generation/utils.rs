@@ -1,6 +1,7 @@
 use crate::board::Board;
-use crate::board::piece::Piece;
-use crate::move_generation::BoardMove;
+use crate::board::color::Color;
+use crate::board::piece::{Piece, PieceType};
+use crate::move_generation::{generate_moves_by_color, BoardMove};
 
 pub fn generate_continuous(
     board: &Board,
@@ -47,4 +48,33 @@ pub fn add_move(
     } else {
         moves.push(BoardMove::new(current_pos, added_pos, None));
     }
+}
+
+pub fn is_in_check(board: &Board, color: Color) -> bool {
+    let mut king_x = 0;
+    let mut king_y = 0;
+    while king_y < 8 {
+        king_x = 0;
+        while king_x < 8 {
+            if let Some(possible_piece) = board.get_piece((king_x, king_y)) {
+                if let PieceType::King { .. } = possible_piece.piece_type {
+                    break
+                }
+            }
+            king_x += 1;
+        }
+        if let Some(possible_piece) = board.get_piece((king_x, king_y)) {
+            if let PieceType::King { .. } = possible_piece.piece_type {
+                break
+            }
+        }
+        king_y += 1;
+    }
+
+    generate_moves_by_color(board, color.inverse())
+        .iter()
+        .any(|possible_capture| {
+            possible_capture.to.0 == king_x &&
+            possible_capture.to.1 == king_y
+        })
 }

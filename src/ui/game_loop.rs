@@ -1,4 +1,4 @@
-use crate::move_generation::generate_possible_moves;
+use crate::move_generation::{generate_piece_moves};
 use crate::ui::rendering::draw_board;
 use crate::ui::rendering::utils::draw_board_square;
 use crate::ui::{constants, GameState};
@@ -86,7 +86,7 @@ pub async fn update(state: &mut GameState) {
 
         if is_mouse_button_released(MouseButton::Left) {
             let selected_square = get_selected_square();
-            state.possible_moves = Some(generate_possible_moves(&state.board, selected_square));
+            state.possible_moves = Some(generate_piece_moves(&state.board, selected_square));
             if state.board.get_piece(selected_square).is_some() {
                 state.selected_piece = Some(selected_square);
             }
