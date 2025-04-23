@@ -6,6 +6,7 @@ use crate::board::Board;
 use crate::move_generation::BoardMove;
 use crate::ui::rendering::pieces::Textures;
 use macroquad::window::Conf;
+use crate::board::color::Color;
 
 pub fn window_conf() -> Conf {
     Conf {
@@ -20,6 +21,7 @@ pub fn window_conf() -> Conf {
 // keeps all the variables of the game
 struct GameState {
     board: Board,
+    turn: Color,
     textures: Textures,
 
     promote_pos: Option<(i32, i32)>,
@@ -31,6 +33,7 @@ struct GameState {
 pub async fn run() {
     let mut state = GameState {
         board: Board::new(),
+        turn: Color::White,
         textures: Textures::new().await.unwrap(),
         promote_pos: None,
         selected_piece: None,
