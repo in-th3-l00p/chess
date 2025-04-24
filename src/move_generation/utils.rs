@@ -58,14 +58,18 @@ pub fn is_in_check(board: &Board, color: Color) -> bool {
         while king_x < 8 {
             if let Some(possible_piece) = board.get_piece((king_x, king_y)) {
                 if let PieceType::King { .. } = possible_piece.piece_type {
-                    break
+                    if possible_piece.color == color {
+                        break
+                    }
                 }
             }
             king_x += 1;
         }
         if let Some(possible_piece) = board.get_piece((king_x, king_y)) {
             if let PieceType::King { .. } = possible_piece.piece_type {
-                break
+                if possible_piece.color == color {
+                    break
+                }
             }
         }
         king_y += 1;
