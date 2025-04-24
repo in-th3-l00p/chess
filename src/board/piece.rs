@@ -35,6 +35,17 @@ impl PieceType {
             PieceType::King { .. } => 0b00000110u8,
         }
     }
+
+    pub fn get_worth(&self) -> i32 {
+        match self {
+            PieceType::Pawn { .. } => 100,
+            PieceType::Knight { .. } => 320,
+            PieceType::Bishop { .. } => 330,
+            PieceType::Rook { .. } => 500,
+            PieceType::Queen { .. } => 900,
+            PieceType::King { .. } => 20000,
+        }
+    }
 }
 
 // utility functions
@@ -99,6 +110,10 @@ impl Piece {
         } else {
             None
         }
+    }
+
+    pub fn get_worth(&self) -> i32 {
+        self.piece_type.get_worth()
     }
 }
 

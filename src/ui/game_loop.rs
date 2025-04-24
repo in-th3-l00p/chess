@@ -1,5 +1,5 @@
 use crate::move_generation::{generate_piece_moves};
-use crate::ui::rendering::draw_board;
+use crate::ui::rendering::{draw_board, draw_eval_bar};
 use crate::ui::rendering::utils::draw_board_square;
 use crate::ui::{constants, GameState};
 use macroquad::color::BLACK;
@@ -17,8 +17,8 @@ use crate::board::piece::PieceType;
 
 fn get_selected_square() -> (i32, i32) {
     (
-        (mouse_position().0 / constants::board::SQUARE_SIZE as f32).floor() as i32,
-        (mouse_position().1 / constants::board::SQUARE_SIZE as f32).floor() as i32
+        (mouse_position().0 / constants::ui::SQUARE_SIZE as f32).floor() as i32,
+        (mouse_position().1 / constants::ui::SQUARE_SIZE as f32).floor() as i32
     )
 }
 
@@ -101,18 +101,21 @@ pub async fn update(state: &mut GameState) {
     }
 }
 
-const PROMOTE_WINDOW_WIDTH: f32 = 178.;
-const PROMOTE_WINDOW_HEIGHT: f32 = 40.;
 
 pub async fn ui(state: &mut GameState) {
     if let Some(promote_pos) = state.promote_pos {
         widgets::Window::new(
             hash!(),
             vec2(
-                constants::window::WINDOW_WIDTH as f32 / 2. - PROMOTE_WINDOW_WIDTH / 2.,
-                constants::window::WINDOW_HEIGHT as f32 / 2. - PROMOTE_WINDOW_HEIGHT / 2.
+                constants::window::WINDOW_WIDTH as f32 / 2. -
+                    constants::ui::PROMOTE_WINDOW_WIDTH / 2.,
+                constants::window::WINDOW_HEIGHT as f32 / 2. -
+                    constants::ui::PROMOTE_WINDOW_HEIGHT / 2.
             ),
-            vec2(PROMOTE_WINDOW_WIDTH, PROMOTE_WINDOW_HEIGHT)
+            vec2(
+                constants::ui::PROMOTE_WINDOW_WIDTH,
+                constants::ui::PROMOTE_WINDOW_HEIGHT
+            )
         )
             .label("Promote")
             .titlebar(true)
@@ -153,7 +156,9 @@ pub async fn ui(state: &mut GameState) {
 pub async fn render(state: &GameState) {
     clear_background(BLACK);
 
+    draw_eval_bar(&state.board);
     draw_board(&state.textures, &state.board);
+
     if state.selected_piece.is_some() || state.preview_piece.is_some() {
         let coords = state
             .selected_piece
