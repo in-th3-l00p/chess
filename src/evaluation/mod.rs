@@ -1,3 +1,5 @@
+mod constants;
+
 use crate::board::Board;
 use crate::board::color::Color;
 
