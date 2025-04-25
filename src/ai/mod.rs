@@ -16,12 +16,18 @@ pub fn get_move(board: &Board, color: Color) -> Option<BoardMove> {
         for i in moves.iter().enumerate() {
             let mut new_board = board.clone();
             new_board.make_move(i.1.clone());
+
             let evaluation = -searching::alphabeta::search(
                 &mut new_board,
                 constants::SEARCH_DEPTH - 1,
                 color.inverse(),
                 i32::MIN + 1, i32::MAX
             );
+            // let evaluation = -searching::negamax::search(
+            //     &mut new_board,
+            //     constants::SEARCH_DEPTH - 1,
+            //     color.inverse(),
+            // );
             if evaluation > max {
                 max = evaluation;
                 max_i = i.0;
