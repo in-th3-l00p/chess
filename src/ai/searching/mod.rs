@@ -1,2 +1,2 @@
 pub mod negamax;
-mod constants;
+pub mod alphabeta;
