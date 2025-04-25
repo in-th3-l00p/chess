@@ -41,12 +41,14 @@ pub fn add_move(
     added_pos: (i32, i32),
     piece: &Piece
 ) {
-    if let Some(capture) = board.get_piece(added_pos) {
-        if capture.color != piece.color {
+    if board.is_in_bounds(added_pos) {
+        if let Some(capture) = board.get_piece(added_pos) {
+            if capture.color != piece.color {
+                moves.push(BoardMove::new(current_pos, added_pos, None));
+            }
+        } else {
             moves.push(BoardMove::new(current_pos, added_pos, None));
         }
-    } else {
-        moves.push(BoardMove::new(current_pos, added_pos, None));
     }
 }
 

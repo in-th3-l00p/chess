@@ -13,6 +13,7 @@ use macroquad::input::{
 use macroquad::math::vec2;
 use macroquad::prelude::{clear_background, next_frame, Color};
 use macroquad::ui::{root_ui, widgets};
+use crate::ai;
 use crate::board::piece::PieceType;
 
 fn get_selected_square() -> (i32, i32) {
@@ -25,6 +26,15 @@ fn get_selected_square() -> (i32, i32) {
 /// used for updating the game logics
 pub async fn update(state: &mut GameState) {
     if state.promote_pos.is_some() {
+        return;
+    }
+
+    // ai move
+    if let crate::board::color::Color::Black = state.turn {
+        if let Some(ai_move) = ai::get_move(&state.board, state.turn) {
+            state.board.make_move(ai_move);
+            state.turn = state.turn.inverse();
+        }
         return;
     }
 
@@ -56,7 +66,7 @@ pub async fn update(state: &mut GameState) {
             if possible_move.promote.is_some() {
                 state.promote_pos = Some(possible_move.to);
             }
-            state.board.move_piece(possible_move);
+            state.board.make_move(possible_move);
             state.turn = state.turn.inverse();
             state.selected_piece = None;
             state.possible_moves = None;

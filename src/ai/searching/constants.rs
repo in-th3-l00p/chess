@@ -1,0 +1,1 @@
+pub const NEGAMAX_DEPTH: i32 = 2;

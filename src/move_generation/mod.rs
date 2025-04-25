@@ -66,7 +66,7 @@ pub fn generate_moves(board: &Board, color: Color) -> Vec<BoardMove> {
         .into_iter()
         .filter(|possible_move| {
             let mut new_board = board.clone();
-            new_board.move_piece((*possible_move).clone());
+            new_board.make_move((*possible_move).clone());
             return !is_in_check(&new_board, color);
         })
         .collect()

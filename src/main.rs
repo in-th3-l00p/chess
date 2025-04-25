@@ -1,7 +1,7 @@
 mod board;
 mod ui;
 mod move_generation;
-mod evaluation;
+mod ai;
 
 use crate::ui::window_conf;
 

@@ -4,7 +4,7 @@ pub mod utils;
 use macroquad::color::Color;
 use macroquad::shapes::draw_rectangle;
 use crate::board::Board;
-use crate::evaluation::evaluate;
+use crate::ai::evaluation::evaluate;
 use crate::ui::constants;
 use crate::ui::rendering::pieces::Textures;
 use crate::ui::rendering::utils::draw_board_square;

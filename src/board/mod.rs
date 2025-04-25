@@ -45,7 +45,7 @@ impl Board {
         self.get_data(coords) != 255u8
     }
 
-    pub fn move_piece(
+    pub fn make_move(
         &mut self,
         board_move: BoardMove,
     ) {
