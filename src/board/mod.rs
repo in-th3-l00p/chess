@@ -87,7 +87,7 @@ impl Board {
                     } else if c.to_ascii_lowercase() == 'k' {
                         board.set_piece((x, y), &Piece {
                             color: if c.is_uppercase() { Color::White } else { Color::Black },
-                            piece_type: PieceType::King { castling: false, has_moved: true }
+                            piece_type: PieceType::King { has_moved: true }
                         });
                     } else {
                         return Err(());
@@ -115,7 +115,7 @@ impl Board {
                     'k' => {
                         board.set_piece((4, 0), &Piece {
                             color: Color::Black,
-                            piece_type: PieceType::King { castling: false, has_moved: false }
+                            piece_type: PieceType::King { has_moved: false }
                         });
                         board.set_piece((7, 0), &Piece {
                             color: Color::Black,
@@ -125,7 +125,7 @@ impl Board {
                     'q' => {
                         board.set_piece((4, 0), &Piece {
                             color: Color::Black,
-                            piece_type: PieceType::King { castling: false, has_moved: false }
+                            piece_type: PieceType::King { has_moved: false }
                         });
                         board.set_piece((0, 0), &Piece {
                             color: Color::Black,
@@ -135,7 +135,7 @@ impl Board {
                     'K' => {
                         board.set_piece((4, 7), &Piece {
                             color: Color::White,
-                            piece_type: PieceType::King { castling: false, has_moved: false }
+                            piece_type: PieceType::King { has_moved: false }
                         });
                         board.set_piece((7, 7), &Piece {
                             color: Color::White,
@@ -145,7 +145,7 @@ impl Board {
                     'Q' => {
                         board.set_piece((4, 7), &Piece {
                             color: Color::White,
-                            piece_type: PieceType::King { castling: false, has_moved: false }
+                            piece_type: PieceType::King { has_moved: false }
                         });
                         board.set_piece((0, 7), &Piece {
                             color: Color::White,
@@ -222,7 +222,7 @@ impl Board {
                         },
                     });
                 },
-                PieceType::King { has_moved, castling } => {
+                PieceType::King { has_moved } => {
                     // check for castling
                     if !has_moved && board_move.to.1 == board_move.from.1 {
                         if board_move.to.0 == 6 {
@@ -243,7 +243,6 @@ impl Board {
                     self.set_piece(board_move.from, &Piece {
                         color: piece.color,
                         piece_type: PieceType::King {
-                            castling,
                             has_moved: true
                         }
                     });

@@ -96,7 +96,7 @@ pub const EMPTY_BOARD: [[u8; 12]; 12] = [
     [255u8; 12]
 ];
 
-pub const _PIECES: [(Piece, u8); 22] = [
+pub const _PIECES: [(Piece, u8); 18] = [
     (
         Piece {
             color: Color::White,
@@ -216,7 +216,6 @@ pub const _PIECES: [(Piece, u8); 22] = [
             color: Color::White,
             piece_type: PieceType::King {
                 has_moved: false,
-                castling: false,
             }
         },
         0b00000110u8,
@@ -226,37 +225,15 @@ pub const _PIECES: [(Piece, u8); 22] = [
             color: Color::White,
             piece_type: PieceType::King {
                 has_moved: true,
-                castling: false,
             }
         },
         0b00001110u8,
     ),
     (
         Piece {
-            color: Color::White,
-            piece_type: PieceType::King {
-                has_moved: false,
-                castling: true,
-            }
-        },
-        0b00010110u8,
-    ),
-    (
-        Piece {
-            color: Color::White,
-            piece_type: PieceType::King {
-                has_moved: true,
-                castling: true,
-            }
-        },
-        0b00011110u8,
-    ),
-    (
-        Piece {
             color: Color::Black,
             piece_type: PieceType::King {
                 has_moved: false,
-                castling: false,
             }
         },
         0b10000110u8,
@@ -266,29 +243,8 @@ pub const _PIECES: [(Piece, u8); 22] = [
             color: Color::Black,
             piece_type: PieceType::King {
                 has_moved: true,
-                castling: false,
             }
         },
         0b10001110u8,
-    ),
-    (
-        Piece {
-            color: Color::Black,
-            piece_type: PieceType::King {
-                has_moved: false,
-                castling: true,
-            },
-        },
-        0b10010110u8,
-    ),
-    (
-        Piece {
-            color: Color::Black,
-            piece_type: PieceType::King {
-                has_moved: true,
-                castling: true,
-            },
-        },
-        0b10011110u8,
-    ),
+    )
 ];

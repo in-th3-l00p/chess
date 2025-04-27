@@ -19,7 +19,6 @@ pub enum PieceType {
     },
     Queen,
     King {
-        castling: bool,
         has_moved: bool,
     },
 }
@@ -62,11 +61,9 @@ impl Piece {
                 if has_moved { 0b00001000u8 } else { 0u8 }
             }
             PieceType::King {
-                castling,
                 has_moved,
             } => {
-                (if has_moved { 0b00001000u8 } else { 0u8 })
-                    | (if castling { 0b00010000u8 } else { 0u8 })
+                if has_moved { 0b00001000u8 } else { 0u8 }
             },
             _ => 0u8
         }
@@ -85,7 +82,6 @@ impl Piece {
         }
 
         let color = Color::from_u8(val);
-        let castling = if val & 0b00010000u8 > 0 { true } else { false };
         let has_moved = if val & 0b00001000u8 > 0 { true } else { false };
 
         let piece_type = match val & 0b00000111u8 {
@@ -97,7 +93,6 @@ impl Piece {
             4u8 => Some(PieceType::Rook { has_moved }),
             5u8 => Some(PieceType::Queen),
             6u8 => Some(PieceType::King {
-                castling,
                 has_moved,
             }),
             _ => None,
