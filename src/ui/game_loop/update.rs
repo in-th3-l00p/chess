@@ -17,10 +17,10 @@ pub async fn execute(state: &mut GameState) {
     }
 
     // ai move
-    if let crate::board::color::Color::Black = state.turn {
-        if let Some(ai_move) = ai::get_move(&state.board, state.turn) {
+    if let crate::board::color::Color::Black = state.board.get_turn() {
+        if let Some(ai_move) = ai::get_move(&state.board, state.board.get_turn()) {
             state.board.make_move(ai_move);
-            state.turn = state.turn.inverse();
+            state.board.change_turn();
         }
         return;
     }
@@ -60,7 +60,7 @@ pub async fn execute(state: &mut GameState) {
                     state.promote_pos = Some(possible_move.to);
                 }
                 state.board.make_move(possible_move);
-                state.turn = state.turn.inverse();
+                state.board.change_turn();
                 state.selected_piece = None;
                 state.possible_moves = None;
                 state.preview_piece = None;
@@ -82,7 +82,7 @@ pub async fn execute(state: &mut GameState) {
 
                     // pressing on other piece
                     if let Some(piece) =  state.board.get_piece(selected_square) {
-                        if piece.color == state.turn {
+                        if piece.color == state.board.get_turn() {
                             state.preview_piece = Some(selected_square);
                         }
                     }
@@ -92,7 +92,7 @@ pub async fn execute(state: &mut GameState) {
             if is_mouse_button_released(MouseButton::Left) {
                 let selected_square = get_selected_square();
                 if let Some(piece) =  state.board.get_piece(selected_square) {
-                    if piece.color == state.turn {
+                    if piece.color == state.board.get_turn() {
                         state.possible_moves = Some(
                             generate_piece_moves(&state.board, selected_square)
                         );

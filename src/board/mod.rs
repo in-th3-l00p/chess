@@ -11,6 +11,7 @@ mod constants;
 pub struct Board {
     data: [[u8; 12]; 12],
     last_move: Option<BoardMove>,
+    turn: Color
 }
 
 // private stuff
@@ -29,6 +30,7 @@ impl Board {
         Board {
             data: EMPTY_BOARD,
             last_move: None,
+            turn: Color::White
         }
     }
 
@@ -36,62 +38,76 @@ impl Board {
         Board {
             data: INITIAL_BOARD,
             last_move: None,
+            turn: Color::White
         }
     }
 
     pub fn from_fen(fen: &str) -> Result<Board, ()> {
-        let mut x = 0;
-        let mut y = 0;
         let mut board = Self::new();
-        for c in fen.chars() {
-            if c == '/' {
-                x = 0;
-                y += 1;
-            } else if c.is_digit(10) {
-                x += c.to_digit(10).unwrap() as i32;
-            } else if c.is_alphabetic() {
-                if c.to_ascii_lowercase() == 'p' {
-                    board.set_piece((x, y), &Piece {
-                        color: if c.is_uppercase() { Color::White } else { Color::Black },
-                        piece_type: PieceType::Pawn {
-                            has_moved: if c.is_uppercase() { y != 6 } else { y != 1 }
-                        }
-                    });
-                } else if c.to_ascii_lowercase() == 'n' {
-                    board.set_piece((x, y), &Piece {
-                        color: if c.is_uppercase() { Color::White } else { Color::Black },
-                        piece_type: PieceType::Knight
-                    });
-                } else if c.to_ascii_lowercase() == 'b' {
-                    board.set_piece((x, y), &Piece {
-                        color: if c.is_uppercase() { Color::White } else { Color::Black },
-                        piece_type: PieceType::Bishop
-                    });
-                } else if c.to_ascii_lowercase() == 'r' {
-                    board.set_piece((x, y), &Piece {
-                        color: if c.is_uppercase() { Color::White } else { Color::Black },
-                        piece_type: PieceType::Rook { has_moved: true }
-                    });
-                } else if c.to_ascii_lowercase() == 'q' {
-                    board.set_piece((x, y), &Piece {
-                        color: if c.is_uppercase() { Color::White } else { Color::Black },
-                        piece_type: PieceType::Queen
-                    });
-                } else if c.to_ascii_lowercase() == 'k' {
-                    board.set_piece((x, y), &Piece {
-                        color: if c.is_uppercase() { Color::White } else { Color::Black },
-                        piece_type: PieceType::King { castling: false, has_moved: true }
-                    });
-                } else {
-                    return Err(());
+        let mut fen = fen.split_whitespace();
+
+        // parsing positions
+        if let Some(positions) = fen.next() {
+            let mut x = 0;
+            let mut y = 0;
+            for c in positions.chars() {
+                if c == '/' {
+                    x = 0;
+                    y += 1;
+                } else if c.is_digit(10) {
+                    x += c.to_digit(10).unwrap() as i32;
+                } else if c.is_alphabetic() {
+                    if c.to_ascii_lowercase() == 'p' {
+                        board.set_piece((x, y), &Piece {
+                            color: if c.is_uppercase() { Color::White } else { Color::Black },
+                            piece_type: PieceType::Pawn {
+                                has_moved: if c.is_uppercase() { y != 6 } else { y != 1 }
+                            }
+                        });
+                    } else if c.to_ascii_lowercase() == 'n' {
+                        board.set_piece((x, y), &Piece {
+                            color: if c.is_uppercase() { Color::White } else { Color::Black },
+                            piece_type: PieceType::Knight
+                        });
+                    } else if c.to_ascii_lowercase() == 'b' {
+                        board.set_piece((x, y), &Piece {
+                            color: if c.is_uppercase() { Color::White } else { Color::Black },
+                            piece_type: PieceType::Bishop
+                        });
+                    } else if c.to_ascii_lowercase() == 'r' {
+                        board.set_piece((x, y), &Piece {
+                            color: if c.is_uppercase() { Color::White } else { Color::Black },
+                            piece_type: PieceType::Rook { has_moved: true }
+                        });
+                    } else if c.to_ascii_lowercase() == 'q' {
+                        board.set_piece((x, y), &Piece {
+                            color: if c.is_uppercase() { Color::White } else { Color::Black },
+                            piece_type: PieceType::Queen
+                        });
+                    } else if c.to_ascii_lowercase() == 'k' {
+                        board.set_piece((x, y), &Piece {
+                            color: if c.is_uppercase() { Color::White } else { Color::Black },
+                            piece_type: PieceType::King { castling: false, has_moved: true }
+                        });
+                    } else {
+                        return Err(());
+                    }
+
+
+                    x += 1;
                 }
-
-
-                x += 1;
             }
         }
 
         Ok(board)
+    }
+
+    pub fn get_turn(&self) -> Color {
+        self.turn
+    }
+
+    pub fn change_turn(&mut self) {
+        self.turn = self.turn.inverse();
     }
 
     pub fn get_piece(&self, coords: (i32, i32)) -> Option<Piece> {
