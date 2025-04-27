@@ -78,5 +78,5 @@ pub fn evaluate(board: &Board) -> i32 {
         }
     }
 
-    black_score - white_score
+    white_score - black_score
 }
