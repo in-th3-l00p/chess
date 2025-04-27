@@ -108,6 +108,55 @@ impl Board {
             }
         }
 
+        // castling
+        if let Some(castling) = fen.next() {
+            for c in castling.chars() {
+                match c {
+                    'k' => {
+                        board.set_piece((4, 0), &Piece {
+                            color: Color::Black,
+                            piece_type: PieceType::King { castling: false, has_moved: false }
+                        });
+                        board.set_piece((7, 0), &Piece {
+                            color: Color::Black,
+                            piece_type: PieceType::Rook { has_moved: false }
+                        })
+                    },
+                    'q' => {
+                        board.set_piece((4, 0), &Piece {
+                            color: Color::Black,
+                            piece_type: PieceType::King { castling: false, has_moved: false }
+                        });
+                        board.set_piece((0, 0), &Piece {
+                            color: Color::Black,
+                            piece_type: PieceType::Rook { has_moved: false }
+                        })
+                    },
+                    'K' => {
+                        board.set_piece((4, 7), &Piece {
+                            color: Color::White,
+                            piece_type: PieceType::King { castling: false, has_moved: false }
+                        });
+                        board.set_piece((7, 7), &Piece {
+                            color: Color::White,
+                            piece_type: PieceType::Rook { has_moved: false }
+                        })
+                    },
+                    'Q' => {
+                        board.set_piece((4, 7), &Piece {
+                            color: Color::White,
+                            piece_type: PieceType::King { castling: false, has_moved: false }
+                        });
+                        board.set_piece((0, 7), &Piece {
+                            color: Color::White,
+                            piece_type: PieceType::Rook { has_moved: false }
+                        })
+                    },
+                    _ => {}
+                }
+            }
+        }
+
         Ok(board)
     }
 
