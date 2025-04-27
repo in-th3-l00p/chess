@@ -1,5 +1,6 @@
 mod utils;
 mod pieces;
+pub mod perft;
 
 use pieces::{bishop, knight, pawn, queen, rook};
 use crate::board::piece::PieceType;
@@ -47,7 +48,7 @@ fn generate_piece_unchecked_moves(board: &Board, pos: (i32, i32)) -> Vec<BoardMo
     moves
 }
 
-fn generate_moves_by_color(board: &Board, color: Color) -> Vec<BoardMove> {
+fn generate_unchecked_moves_by_color(board: &Board, color: Color) -> Vec<BoardMove> {
     let mut moves = Vec::new();
     for x in 0..8 {
         for y in 0..8 {
@@ -62,7 +63,7 @@ fn generate_moves_by_color(board: &Board, color: Color) -> Vec<BoardMove> {
 }
 
 pub fn generate_moves(board: &Board, color: Color) -> Vec<BoardMove> {
-    generate_moves_by_color(board, color)
+    generate_unchecked_moves_by_color(board, color)
         .into_iter()
         .filter(|possible_move| {
             let mut new_board = board.clone();

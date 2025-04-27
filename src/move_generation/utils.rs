@@ -1,7 +1,7 @@
 use crate::board::Board;
 use crate::board::color::Color;
 use crate::board::piece::{Piece, PieceType};
-use crate::move_generation::{generate_moves_by_color, BoardMove};
+use crate::move_generation::{generate_unchecked_moves_by_color, BoardMove};
 
 pub fn generate_continuous(
     board: &Board,
@@ -77,7 +77,7 @@ pub fn is_in_check(board: &Board, color: Color) -> bool {
         king_y += 1;
     }
 
-    generate_moves_by_color(board, color.inverse())
+    generate_unchecked_moves_by_color(board, color.inverse())
         .iter()
         .any(|possible_capture| {
             possible_capture.to.0 == king_x &&
