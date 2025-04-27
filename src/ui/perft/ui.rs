@@ -52,6 +52,7 @@ pub fn execute(game_state: &mut GameState) {
                     widgets::Label::new("Depth:")
                         .ui(ui);
                     widgets::InputText::new(hash!())
+                        .filter_numbers()
                         .ui(ui, &mut perft_state.depth_string);
 
                     // margins
