@@ -81,6 +81,21 @@ pub const INITIAL_BOARD: [[u8; 12]; 12] = [
     [255u8; 12]
 ];
 
+pub const EMPTY_BOARD: [[u8; 12]; 12] = [
+    [255u8; 12],
+    [255u8; 12],
+    EMPTY_RANK,
+    EMPTY_RANK,
+    EMPTY_RANK,
+    EMPTY_RANK,
+    EMPTY_RANK,
+    EMPTY_RANK,
+    EMPTY_RANK,
+    EMPTY_RANK,
+    [255u8; 12],
+    [255u8; 12]
+];
+
 pub const _PIECES: [(Piece, u8); 22] = [
     (
         Piece {

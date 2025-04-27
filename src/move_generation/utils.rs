@@ -16,7 +16,7 @@ pub fn generate_continuous(
         current_pos.1 += offset.1;
 
         while
-        board.get_piece(current_pos).is_none() &&
+            board.get_piece(current_pos).is_none() &&
             board.is_in_bounds(current_pos)
         {
             moves.push(BoardMove::new(pos, (current_pos.0, current_pos.1), None));

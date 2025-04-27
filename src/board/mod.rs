@@ -1,5 +1,5 @@
 use crate::board::color::Color;
-use crate::board::constants::INITIAL_BOARD;
+use crate::board::constants::{EMPTY_BOARD, INITIAL_BOARD};
 use crate::board::piece::{Piece, PieceType};
 use crate::move_generation::BoardMove;
 
@@ -27,7 +27,7 @@ impl Board {
 impl Board {
     pub fn new() -> Board {
         Board {
-            data: [[0u8; 12]; 12],
+            data: EMPTY_BOARD,
             last_move: None,
         }
     }
@@ -80,6 +80,8 @@ impl Board {
                         color: if c.is_uppercase() { Color::White } else { Color::Black },
                         piece_type: PieceType::King { castling: false, has_moved: true }
                     });
+                } else {
+                    return Err(());
                 }
 
 
