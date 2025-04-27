@@ -23,11 +23,6 @@ pub fn get_move(board: &Board, color: Color) -> Option<BoardMove> {
                 color.inverse(),
                 i32::MIN + 1, i32::MAX
             );
-            // let evaluation = -searching::negamax::search(
-            //     &mut new_board,
-            //     constants::SEARCH_DEPTH - 1,
-            //     color.inverse(),
-            // );
             if evaluation > max {
                 max = evaluation;
                 max_i = i.0;
