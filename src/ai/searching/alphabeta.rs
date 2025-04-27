@@ -7,7 +7,7 @@ pub fn search(
     depth: i32,
     color: Color,
     mut alpha: i32,
-    mut beta: i32
+    beta: i32
 ) -> i32 {
     if depth == 0 {
         evaluate(board)
