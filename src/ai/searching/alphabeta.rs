@@ -10,7 +10,11 @@ pub fn search(
     beta: i32
 ) -> i32 {
     if depth == 0 {
-        -evaluate(board)
+        if let Color::White = color {
+            evaluate(board)
+        } else {
+            -evaluate(board)
+        }
     } else {
         let mut best_value = i32::MIN + 1;
         for potential_move in crate::move_generation::generate_moves(board, color) {
