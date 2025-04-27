@@ -99,6 +99,15 @@ impl Board {
             }
         }
 
+        // getting current turn
+        if let Some(turn) = fen.next() {
+            match turn {
+                "w" => board.turn = Color::White,
+                "b" => board.turn = Color::Black,
+                _ => return Err(())
+            }
+        }
+
         Ok(board)
     }
 
