@@ -1,11 +1,13 @@
 mod rendering;
 mod game_loop;
 mod constants;
+mod perft;
 
 use crate::board::Board;
 use crate::move_generation::BoardMove;
 use crate::ui::rendering::pieces::Textures;
 use macroquad::window::Conf;
+use perft::PerftState;
 use crate::board::color::Color;
 
 pub fn window_conf() -> Conf {
@@ -28,6 +30,8 @@ struct GameState {
     selected_piece: Option<(i32, i32)>,
     preview_piece: Option<(i32, i32)>,
     possible_moves: Option<Vec<BoardMove>>,
+
+    perft_state: Option<PerftState>,
 }
 
 pub async fn run() {
@@ -39,10 +43,11 @@ pub async fn run() {
         selected_piece: None,
         preview_piece: None,
         possible_moves: None,
+        perft_state: None,
     };
     loop {
-        game_loop::update(&mut state).await;
-        game_loop::ui(&mut state).await;
-        game_loop::render(&state).await;
+        game_loop::update::execute(&mut state).await;
+        game_loop::ui::execute(&mut state).await;
+        game_loop::render::execute(&state).await;
     }
 }

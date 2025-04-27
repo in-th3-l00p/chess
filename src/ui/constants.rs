@@ -1,8 +1,13 @@
 pub mod window {
-    use crate::ui::constants::ui::{BOARD_HEIGHT, BOARD_WIDTH, EVAL_BAR_WIDTH};
+    use crate::ui::constants::ui::{
+        BOARD_HEIGHT,
+        BOARD_WIDTH,
+        EVAL_BAR_WIDTH,
+        MENU_WIDTH
+    };
 
     pub const WINDOW_TITLE: &str = "Crab chess";
-    pub const WINDOW_WIDTH: i32 = BOARD_WIDTH + EVAL_BAR_WIDTH;
+    pub const WINDOW_WIDTH: i32 = BOARD_WIDTH + EVAL_BAR_WIDTH + MENU_WIDTH;
     pub const WINDOW_HEIGHT: i32 = BOARD_HEIGHT;
     pub const WINDOW_RESIZABLE: bool = false;
 }
@@ -22,6 +27,13 @@ pub mod ui {
     pub const PROMOTE_WINDOW_WIDTH: f32 = 178.;
     pub const PROMOTE_WINDOW_HEIGHT: f32 = 40.;
 
+    pub const PERFT_INPUT_WINDOW_WIDTH: f32 = 178.;
+    pub const PERFT_INPUT_WINDOW_HEIGHT: f32 = 135.;
+    pub const PERFT_WINDOW_WIDTH: f32 = 300.;
+    pub const PERFT_WINDOW_HEIGHT: f32 = 200.;
+
+
     pub const EVAL_BAR_WIDTH: i32 = 20;
     pub const BOARD_RENDER_OFFSET: (i32, i32) = (EVAL_BAR_WIDTH, 0);
+    pub const MENU_WIDTH: i32 = 200;
 }
