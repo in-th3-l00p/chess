@@ -13,12 +13,81 @@ pub struct Board {
     last_move: Option<BoardMove>,
 }
 
+// private stuff
+impl Board {
+    fn get_data(&self, coords: (i32, i32)) -> u8 {
+        self.data[(coords.1 + 2) as usize][(coords.0 + 2) as usize]
+    }
+
+    fn set_data(&mut self, coords: (i32, i32),  piece: u8) {
+        self.data[(coords.1 + 2) as usize][(coords.0 + 2) as usize] = piece;
+    }
+}
+
 impl Board {
     pub fn new() -> Board {
+        Board {
+            data: [[0u8; 12]; 12],
+            last_move: None,
+        }
+    }
+
+    pub fn new_game() -> Board {
         Board {
             data: INITIAL_BOARD,
             last_move: None,
         }
+    }
+
+    pub fn from_fen(fen: &str) -> Result<Board, ()> {
+        let mut x = 0;
+        let mut y = 0;
+        let mut board = Self::new();
+        for c in fen.chars() {
+            if c == '/' {
+                x = 0;
+                y += 1;
+            } else if c.is_digit(10) {
+                x += c.to_digit(10).unwrap() as i32;
+            } else if c.is_alphabetic() {
+                if c.to_ascii_lowercase() == 'p' {
+                    board.set_piece((x, y), &Piece {
+                        color: if c.is_uppercase() { Color::White } else { Color::Black },
+                        piece_type: PieceType::Pawn { has_moved: true }
+                    });
+                } else if c.to_ascii_lowercase() == 'n' {
+                    board.set_piece((x, y), &Piece {
+                        color: if c.is_uppercase() { Color::White } else { Color::Black },
+                        piece_type: PieceType::Knight
+                    });
+                } else if c.to_ascii_lowercase() == 'b' {
+                    board.set_piece((x, y), &Piece {
+                        color: if c.is_uppercase() { Color::White } else { Color::Black },
+                        piece_type: PieceType::Bishop
+                    });
+                } else if c.to_ascii_lowercase() == 'r' {
+                    board.set_piece((x, y), &Piece {
+                        color: if c.is_uppercase() { Color::White } else { Color::Black },
+                        piece_type: PieceType::Rook { has_moved: true }
+                    });
+                } else if c.to_ascii_lowercase() == 'q' {
+                    board.set_piece((x, y), &Piece {
+                        color: if c.is_uppercase() { Color::White } else { Color::Black },
+                        piece_type: PieceType::Queen
+                    });
+                } else if c.to_ascii_lowercase() == 'k' {
+                    board.set_piece((x, y), &Piece {
+                        color: if c.is_uppercase() { Color::White } else { Color::Black },
+                        piece_type: PieceType::King { castling: false, has_moved: true }
+                    });
+                }
+
+
+                x += 1;
+            }
+        }
+
+        Ok(board)
     }
 
     pub fn get_piece(&self, coords: (i32, i32)) -> Option<Piece> {
@@ -27,14 +96,6 @@ impl Board {
 
     pub fn set_piece(&mut self, coords: (i32, i32), piece: &Piece) {
         self.set_data(coords, piece.to_u8());
-    }
-
-    fn get_data(&self, coords: (i32, i32)) -> u8 {
-        self.data[(coords.1 + 2) as usize][(coords.0 + 2) as usize]
-    }
-
-    fn set_data(&mut self, coords: (i32, i32),  piece: u8) {
-        self.data[(coords.1 + 2) as usize][(coords.0 + 2) as usize] = piece;
     }
 
     pub fn get_last_move(&self) -> &Option<BoardMove> {
@@ -125,7 +186,7 @@ mod tests {
 
     #[test]
     fn it_initializes() {
-        let board = Board::new();
+        let board = Board::new_game();
         assert_eq!(board.data, INITIAL_BOARD);
     }
 }

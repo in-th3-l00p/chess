@@ -32,11 +32,12 @@ struct GameState {
     possible_moves: Option<Vec<BoardMove>>,
 
     perft_state: Option<PerftState>,
+    fen: String,
 }
 
 pub async fn run() {
     let mut state = GameState {
-        board: Board::new(),
+        board: Board::new_game(),
         turn: Color::White,
         textures: Textures::new().await.unwrap(),
         promote_pos: None,
@@ -44,6 +45,7 @@ pub async fn run() {
         preview_piece: None,
         possible_moves: None,
         perft_state: None,
+        fen: String::from("")
     };
     loop {
         game_loop::update::execute(&mut state).await;

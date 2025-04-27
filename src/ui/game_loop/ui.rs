@@ -1,6 +1,7 @@
 use macroquad::ui::{root_ui, widgets};
 use macroquad::hash;
 use macroquad::math::vec2;
+use crate::board::Board;
 use crate::board::piece::PieceType;
 use crate::ui::{constants, perft, GameState};
 use crate::ui::perft::PerftState;
@@ -77,6 +78,17 @@ pub fn menu(state: &mut GameState) {
             ui.same_line(0.);
             if widgets::Button::new("Run").ui(ui) {
                 state.perft_state = Option::from(PerftState::new());
+            }
+
+            ui.separator();
+
+            widgets::Label::new("FEN:").ui(ui);
+            widgets::InputText::new(hash!())
+                .ui(ui, &mut state.fen);
+            if widgets::Button::new("Set").ui(ui) {
+                if let Ok(new_board) = Board::from_fen(state.fen.as_str()) {
+                    state.board = new_board;
+                }
             }
         });
 }
