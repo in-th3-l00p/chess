@@ -25,73 +25,79 @@ pub async fn execute(state: &mut GameState) {
         return;
     }
 
+    let selected_square = get_selected_square();
     if
-        state.possible_moves.is_some()  &&
-        is_mouse_button_released(MouseButton::Left)
+        selected_square.0 >= 0 &&
+        selected_square.1 >= 0 &&
+        selected_square.0 <= 7 &&
+        selected_square.1 <= 7
     {
-        // moving
-        let selected_square = get_selected_square();
-        if state.possible_moves
-            .as_ref()
-            .unwrap()
-            .iter()
-            .any(|possible_move| {
-                possible_move.to == selected_square
-            })
+        if
+            state.possible_moves.is_some()  &&
+            is_mouse_button_released(MouseButton::Left)
         {
-            let possible_move =
-                state.possible_moves
-                    .as_ref()
-                    .unwrap()
-                    .iter()
-                    .find(|possible_move| {
-                        possible_move.to == selected_square
-                    })
-                    .unwrap()
-                    .clone();
+            // moving
+            if state.possible_moves
+                .as_ref()
+                .unwrap()
+                .iter()
+                .any(|possible_move| {
+                    possible_move.to == selected_square
+                })
+            {
+                let possible_move =
+                    state.possible_moves
+                        .as_ref()
+                        .unwrap()
+                        .iter()
+                        .find(|possible_move| {
+                            possible_move.to == selected_square
+                        })
+                        .unwrap()
+                        .clone();
 
-            if possible_move.promote.is_some() {
-                state.promote_pos = Some(possible_move.to);
-            }
-            state.board.make_move(possible_move);
-            state.turn = state.turn.inverse();
-            state.selected_piece = None;
-            state.possible_moves = None;
-            state.preview_piece = None;
-        }
-    } else {
-        if is_mouse_button_down(MouseButton::Left) {
-            let selected_square = get_selected_square();
-            if !(
-                state.possible_moves.is_some() &&
-                state.possible_moves
-                    .as_ref()
-                    .unwrap()
-                    .iter()
-                    .any(|possible_move| {
-                        possible_move.to == selected_square
-                    })
-            ) {
+                if possible_move.promote.is_some() {
+                    state.promote_pos = Some(possible_move.to);
+                }
+                state.board.make_move(possible_move);
+                state.turn = state.turn.inverse();
                 state.selected_piece = None;
                 state.possible_moves = None;
+                state.preview_piece = None;
+            }
+        } else {
+            if is_mouse_button_down(MouseButton::Left) {
+                if !(
+                    state.possible_moves.is_some() &&
+                        state.possible_moves
+                            .as_ref()
+                            .unwrap()
+                            .iter()
+                            .any(|possible_move| {
+                                possible_move.to == selected_square
+                            })
+                ) {
+                    state.selected_piece = None;
+                    state.possible_moves = None;
 
-                // pressing on other piece
-                if let Some(piece) =  state.board.get_piece(selected_square) {
-                    if piece.color == state.turn {
-                        state.preview_piece = Some(selected_square);
+                    // pressing on other piece
+                    if let Some(piece) =  state.board.get_piece(selected_square) {
+                        if piece.color == state.turn {
+                            state.preview_piece = Some(selected_square);
+                        }
                     }
                 }
             }
-        }
 
-        if is_mouse_button_released(MouseButton::Left) {
-            let selected_square = get_selected_square();
-            if let Some(piece) =  state.board.get_piece(selected_square) {
-                if piece.color == state.turn {
-                    state.possible_moves = Some(
-                        generate_piece_moves(&state.board, selected_square)
-                    );
-                    state.selected_piece = Some(selected_square);
+            if is_mouse_button_released(MouseButton::Left) {
+                let selected_square = get_selected_square();
+                if let Some(piece) =  state.board.get_piece(selected_square) {
+                    if piece.color == state.turn {
+                        state.possible_moves = Some(
+                            generate_piece_moves(&state.board, selected_square)
+                        );
+                        state.selected_piece = Some(selected_square);
+                    }
                 }
             }
         }

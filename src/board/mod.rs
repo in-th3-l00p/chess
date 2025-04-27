@@ -53,7 +53,9 @@ impl Board {
                 if c.to_ascii_lowercase() == 'p' {
                     board.set_piece((x, y), &Piece {
                         color: if c.is_uppercase() { Color::White } else { Color::Black },
-                        piece_type: PieceType::Pawn { has_moved: true }
+                        piece_type: PieceType::Pawn {
+                            has_moved: if c.is_uppercase() { y != 6 } else { y != 1 }
+                        }
                     });
                 } else if c.to_ascii_lowercase() == 'n' {
                     board.set_piece((x, y), &Piece {
