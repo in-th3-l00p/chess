@@ -12,7 +12,7 @@ fn get_selected_square() -> (i32, i32) {
 
 /// used for updating the game logics
 pub async fn execute(state: &mut GameState) {
-    if state.promote_pos.is_some() {
+    if state.promote_move.is_some() {
         return;
     }
 
@@ -45,7 +45,7 @@ pub async fn execute(state: &mut GameState) {
                     possible_move.to == selected_square
                 })
             {
-                let possible_move =
+                let selected_move =
                     state.possible_moves
                         .as_ref()
                         .unwrap()
@@ -56,14 +56,15 @@ pub async fn execute(state: &mut GameState) {
                         .unwrap()
                         .clone();
 
-                if possible_move.promote.is_some() {
-                    state.promote_pos = Some(possible_move.to);
+                if selected_move.promote.is_some() {
+                    state.promote_move = Some(selected_move);
+                } else {
+                    state.board.make_move(selected_move);
+                    state.board.change_turn();
+                    state.selected_piece = None;
+                    state.possible_moves = None;
+                    state.preview_piece = None;
                 }
-                state.board.make_move(possible_move);
-                state.board.change_turn();
-                state.selected_piece = None;
-                state.possible_moves = None;
-                state.preview_piece = None;
             }
         } else {
             if is_mouse_button_down(MouseButton::Left) {

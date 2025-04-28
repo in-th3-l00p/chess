@@ -8,7 +8,7 @@ use crate::ui::perft::PerftState;
 
 pub fn promote_window(state: &mut GameState) {
     // promote window
-    if let Some(promote_pos) = state.promote_pos {
+    if let Some(mut promote_move) = state.promote_move.clone() {
         widgets::Window::new(
             hash!(),
             vec2(
@@ -26,32 +26,34 @@ pub fn promote_window(state: &mut GameState) {
             .titlebar(true)
             .movable(false)
             .ui(&mut *root_ui(), |ui| {
-                let mut piece = state
-                    .board
-                    .get_piece(promote_pos)
-                    .unwrap();
+                let mut selected = false;
                 if widgets::Button::new("Queen").ui(ui) {
-                    piece.piece_type = PieceType::Queen;
-                    state.board.set_piece(promote_pos, &piece);
-                    state.promote_pos = None;
+                    promote_move.promote = Some(PieceType::Queen);
+                    selected = true;
                 }
                 ui.same_line(0.);
                 if widgets::Button::new("Rook").ui(ui) {
-                    piece.piece_type = PieceType::Rook { has_moved: true };
-                    state.board.set_piece(promote_pos, &piece);
-                    state.promote_pos = None;
+                    promote_move.promote = Some(PieceType::Rook { has_moved: true });
+                    selected = true;
                 }
                 ui.same_line(0.);
                 if widgets::Button::new("Bishop").ui(ui) {
-                    piece.piece_type = PieceType::Bishop;
-                    state.board.set_piece(promote_pos, &piece);
-                    state.promote_pos = None;
+                    promote_move.promote = Some(PieceType::Bishop);
+                    selected = true;
                 }
                 ui.same_line(0.);
                 if widgets::Button::new("Knight").ui(ui) {
-                    piece.piece_type = PieceType::Knight;
-                    state.board.set_piece(promote_pos, &piece);
-                    state.promote_pos = None;
+                    promote_move.promote = Some(PieceType::Knight);
+                    selected = true;
+                }
+
+                if selected {
+                    state.board.make_move(promote_move);
+                    state.board.change_turn();
+                    state.selected_piece = None;
+                    state.possible_moves = None;
+                    state.preview_piece = None;
+                    state.promote_move = None;
                 }
             });
     }

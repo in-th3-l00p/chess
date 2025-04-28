@@ -24,7 +24,8 @@ struct GameState {
     board: Board,
     textures: Textures,
 
-    promote_pos: Option<(i32, i32)>,
+    promote_move: Option<BoardMove>,
+
     selected_piece: Option<(i32, i32)>,
     preview_piece: Option<(i32, i32)>,
     possible_moves: Option<Vec<BoardMove>>,
@@ -37,7 +38,7 @@ pub async fn run() {
     let mut state = GameState {
         board: Board::new_game(),
         textures: Textures::new().await.unwrap(),
-        promote_pos: None,
+        promote_move: None,
         selected_piece: None,
         preview_piece: None,
         possible_moves: None,

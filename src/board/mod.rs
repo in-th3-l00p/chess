@@ -209,9 +209,11 @@ impl Board {
                     }
                     self.set_piece(board_move.from, &Piece {
                         color: piece.color,
-                        piece_type: PieceType::Pawn {
-                            has_moved: true
-                        },
+                        piece_type: board_move.promote.clone().unwrap_or(
+                            PieceType::Pawn {
+                                has_moved: true
+                            }
+                        )
                     });
                 },
                 PieceType::Rook { .. } => {

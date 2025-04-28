@@ -1,1 +1,1 @@
-pub const SEARCH_DEPTH: i32 = 5;
+pub const SEARCH_DEPTH: i32 = 4;
