@@ -6,7 +6,7 @@ pub mod window {
         MENU_WIDTH
     };
 
-    pub const WINDOW_TITLE: &str = "Crab chess";
+    pub const WINDOW_TITLE: &str = "Șah";
     pub const WINDOW_WIDTH: i32 = BOARD_WIDTH + EVAL_BAR_WIDTH + MENU_WIDTH;
     pub const WINDOW_HEIGHT: i32 = BOARD_HEIGHT;
     pub const WINDOW_RESIZABLE: bool = false;

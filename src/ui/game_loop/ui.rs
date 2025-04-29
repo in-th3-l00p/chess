@@ -73,21 +73,21 @@ pub fn menu(state: &mut GameState) {
             constants::window::WINDOW_HEIGHT as f32
         )
     )
-        .label("Menu")
+        .label("Meniu")
         .titlebar(true)
         .movable(false)
         .ui(&mut *root_ui(), |ui| {
-            widgets::Label::new("Path:").ui(ui);
+            widgets::Label::new("Calea fisierului:").ui(ui);
             widgets::InputText::new(hash!("save_path"))
                 .ui(ui, &mut state.save_path);
 
-            if widgets::Button::new("Save").ui(ui) {
+            if widgets::Button::new("Salveaza").ui(ui) {
                 if let Err(e) = state.board.save_to_file(&state.save_path) {
                     eprintln!("Error saving game: {}", e);
                 }
             }
             ui.same_line(0.);
-            if widgets::Button::new("Load Game").ui(ui) {
+            if widgets::Button::new("Încarca").ui(ui) {
                 if Path::new(&state.save_path).exists() {
                     match Board::load_from_file(&state.save_path) {
                         Ok(loaded_board) => state.board = loaded_board,
@@ -102,7 +102,7 @@ pub fn menu(state: &mut GameState) {
             widgets::Label::new("FEN:").ui(ui);
             widgets::InputText::new(hash!())
                 .ui(ui, &mut state.fen);
-            if widgets::Button::new("Set").ui(ui) {
+            if widgets::Button::new("Seteaza").ui(ui) {
                 if let Ok(new_board) = Board::from_fen(state.fen.as_str()) {
                     state.board = new_board;
                 }
