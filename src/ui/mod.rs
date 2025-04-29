@@ -32,6 +32,7 @@ struct GameState {
 
     perft_state: Option<PerftState>,
     fen: String,
+    save_path: String,
 }
 
 pub async fn run() {
@@ -43,7 +44,8 @@ pub async fn run() {
         preview_piece: None,
         possible_moves: None,
         perft_state: None,
-        fen: String::from("")
+        fen: String::from(""),
+        save_path: String::from("chess_save.json"),
     };
     loop {
         game_loop::update::execute(&mut state).await;

@@ -1,13 +1,14 @@
 use crate::board::color::Color;
 use std::hash::{Hash, Hasher};
+use serde::{Serialize, Deserialize};
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Piece {
     pub(crate) color: Color,
     pub(crate) piece_type: PieceType
 }
 
-#[derive(Debug, Clone, Eq, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
 pub enum PieceType {
     Pawn {
         has_moved: bool,

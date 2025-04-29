@@ -5,6 +5,7 @@ use crate::board::Board;
 use crate::board::piece::PieceType;
 use crate::ui::{constants, perft, GameState};
 use crate::ui::perft::PerftState;
+use std::path::Path;
 
 pub fn promote_window(state: &mut GameState) {
     // promote window
@@ -76,12 +77,26 @@ pub fn menu(state: &mut GameState) {
         .titlebar(true)
         .movable(false)
         .ui(&mut *root_ui(), |ui| {
-            widgets::Label::new("Perft:").ui(ui);
+            widgets::Label::new("Path:").ui(ui);
+            widgets::InputText::new(hash!("save_path"))
+                .ui(ui, &mut state.save_path);
+
+            if widgets::Button::new("Save").ui(ui) {
+                if let Err(e) = state.board.save_to_file(&state.save_path) {
+                    eprintln!("Error saving game: {}", e);
+                }
+            }
             ui.same_line(0.);
-            if widgets::Button::new("Run").ui(ui) {
-                state.perft_state = Option::from(PerftState::new());
+            if widgets::Button::new("Load Game").ui(ui) {
+                if Path::new(&state.save_path).exists() {
+                    match Board::load_from_file(&state.save_path) {
+                        Ok(loaded_board) => state.board = loaded_board,
+                        Err(e) => eprintln!("Error loading game: {}", e)
+                    }
+                }
             }
 
+            ui.separator();
             ui.separator();
 
             widgets::Label::new("FEN:").ui(ui);

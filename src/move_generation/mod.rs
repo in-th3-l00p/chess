@@ -8,8 +8,9 @@ use crate::board::Board;
 use crate::board::color::Color;
 use crate::move_generation::pieces::king;
 use crate::move_generation::utils::is_in_check;
+use serde::{Serialize, Deserialize};
 
-#[derive(Clone, Eq, PartialEq)]
+#[derive(Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub struct BoardMove {
     pub from: (i32, i32),
     pub to: (i32, i32),

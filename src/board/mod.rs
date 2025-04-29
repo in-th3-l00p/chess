@@ -2,12 +2,16 @@ use crate::board::color::Color;
 use crate::board::constants::{EMPTY_BOARD, INITIAL_BOARD};
 use crate::board::piece::{Piece, PieceType};
 use crate::move_generation::BoardMove;
+use std::io::{Read, Write};
+use std::fs::File;
+use serde::{Serialize, Deserialize};
+use std::path::Path;
 
 pub mod piece;
 pub mod color;
 mod constants;
 
-#[derive(Clone, Eq, PartialEq)]
+#[derive(Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub struct Board {
     data: [[u8; 12]; 12],
     last_move: Option<BoardMove>,
@@ -257,15 +261,61 @@ impl Board {
         self.set_data(board_move.to, self.get_data(board_move.from));
         self.set_data(board_move.from, 0u8);
     }
+
+    pub fn save_to_file(&self, filepath: &str) -> Result<(), String> {
+        let serialized = serde_json::to_string(self)
+            .map_err(|e| format!("Serialization error: {}", e))?;
+        
+        let mut file = File::create(Path::new(filepath))
+            .map_err(|e| format!("Failed to create file: {}", e))?;
+        
+        file.write_all(serialized.as_bytes())
+            .map_err(|e| format!("Failed to write to file: {}", e))?;
+        
+        Ok(())
+    }
+
+    pub fn load_from_file(filepath: &str) -> Result<Board, String> {
+        let mut file = File::open(Path::new(filepath))
+            .map_err(|e| format!("Failed to open file: {}", e))?;
+        
+        let mut contents = String::new();
+        file.read_to_string(&mut contents)
+            .map_err(|e| format!("Failed to read file: {}", e))?;
+        
+        let board: Board = serde_json::from_str(&contents)
+            .map_err(|e| format!("Deserialization error: {}", e))?;
+        
+        Ok(board)
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::fs;
 
     #[test]
     fn it_initializes() {
         let board = Board::new_game();
         assert_eq!(board.data, INITIAL_BOARD);
+    }
+
+    #[test]
+    fn it_serializes_and_deserializes() {
+        let original_board = Board::new_game();
+        let test_file = "test_save.json";
+        
+        // Save the board
+        original_board.save_to_file(test_file).unwrap();
+        
+        // Load the board
+        let loaded_board = Board::load_from_file(test_file).unwrap();
+        
+        // Compare
+        assert_eq!(original_board, loaded_board);
+        
+        // Clean up
+        fs::remove_file(test_file).unwrap();
     }
 }
