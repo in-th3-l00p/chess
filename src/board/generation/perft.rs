@@ -1,6 +1,6 @@
-use crate::board::color::Color;
+use crate::board::pieces::color::Color;
 use crate::board::Board;
-use crate::move_generation::generate_moves;
+use crate::board::generation::generate_moves;
 
 pub fn perft(board: &Board, depth: i32) -> usize {
     let mut moves = generate_moves(board, Color::White);

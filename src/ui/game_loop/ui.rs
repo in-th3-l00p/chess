@@ -2,7 +2,7 @@ use macroquad::ui::{root_ui, widgets};
 use macroquad::hash;
 use macroquad::math::vec2;
 use crate::board::Board;
-use crate::board::piece::PieceType;
+use crate::board::pieces::PieceType;
 use crate::ui::{constants, perft, GameState};
 use crate::ui::perft::PerftState;
 

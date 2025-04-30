@@ -1,5 +1,5 @@
-use crate::board::color::Color;
-use crate::board::piece::{Piece, PieceType};
+use crate::board::pieces::color::Color;
+use crate::board::pieces::{Piece, PieceType};
 use crate::ui::constants;
 use macroquad::color::WHITE;
 use macroquad::math::Vec2;

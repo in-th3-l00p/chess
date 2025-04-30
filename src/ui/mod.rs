@@ -4,7 +4,7 @@ mod constants;
 mod perft;
 
 use crate::board::Board;
-use crate::move_generation::BoardMove;
+use crate::board::moving::BoardMove;
 use crate::ui::rendering::pieces::Textures;
 use macroquad::window::Conf;
 use perft::PerftState;

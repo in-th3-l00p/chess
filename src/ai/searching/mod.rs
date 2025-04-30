@@ -1,6 +1,6 @@
 use crate::ai::evaluation::evaluate;
 use crate::board::Board;
-use crate::board::color::Color;
+use crate::board::pieces::color::Color;
 
 pub fn search(
     board: &mut Board,
@@ -17,7 +17,7 @@ pub fn search(
         }
     } else {
         let mut best_value = i32::MIN + 1;
-        for potential_move in crate::move_generation::generate_moves(board, color) {
+        for potential_move in crate::board::generation::generate_moves(board, color) {
             let mut new_board = board.clone();
             new_board.make_move(potential_move);
             let score = -search(

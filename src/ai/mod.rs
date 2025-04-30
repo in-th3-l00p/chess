@@ -1,6 +1,7 @@
 use crate::board::Board;
-use crate::board::color::Color;
-use crate::move_generation::{generate_moves, BoardMove};
+use crate::board::pieces::color::Color;
+use crate::board::generation::generate_moves;
+use crate::board::moving::BoardMove;
 
 pub mod evaluation;
 pub mod searching;

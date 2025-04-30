@@ -1,8 +1,8 @@
-use crate::board::color::Color;
-use crate::board::piece::PieceType::Pawn;
-use crate::board::piece::{Piece, PieceType};
+use crate::board::pieces::color::Color;
+use crate::board::pieces::PieceType::Pawn;
+use crate::board::pieces::{Piece, PieceType};
 use crate::board::{Board};
-use crate::move_generation::BoardMove;
+use crate::board::moving::BoardMove;
 
 fn check_en_passant(
     board: &Board,

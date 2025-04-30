@@ -1,8 +1,8 @@
 mod constants;
 
-use crate::board::color::Color;
+use crate::board::pieces::color::Color;
 use crate::board::Board;
-use crate::board::piece::{Piece, PieceType};
+use crate::board::pieces::{Piece, PieceType};
 
 fn is_end_game(board: &Board) -> bool {
     let mut black_queen = false;

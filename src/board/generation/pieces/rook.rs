@@ -1,7 +1,7 @@
 use crate::board::Board;
-use crate::board::piece::Piece;
-use crate::move_generation::BoardMove;
-use crate::move_generation::utils::generate_continuous;
+use crate::board::pieces::Piece;
+use crate::board::moving::BoardMove;
+use crate::board::generation::utils::generate_continuous;
 
 const ROOK_OFFSETS: [(i32, i32); 4] = [
     (1, 0),

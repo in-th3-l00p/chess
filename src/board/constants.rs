@@ -1,5 +1,5 @@
-use crate::board::color::Color;
-use crate::board::piece::{Piece, PieceType};
+use crate::board::pieces::color::Color;
+use crate::board::pieces::{Piece, PieceType};
 
 const RANK_8: [u8; 12] = [
     255u8,

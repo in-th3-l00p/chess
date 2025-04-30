@@ -1,8 +1,9 @@
-use crate::board::piece::{Piece, PieceType};
+use crate::board::pieces::{Piece, PieceType};
 use crate::board::Board;
-use crate::board::color::Color;
-use crate::move_generation::{generate_piece_unchecked_moves, BoardMove};
-use crate::move_generation::utils::add_move;
+use crate::board::pieces::color::Color;
+use crate::board::generation::generate_piece_unchecked_moves;
+use crate::board::generation::utils::add_move;
+use crate::board::moving::BoardMove;
 
 const DIRECTIONS: [(i32, i32); 8] = [
     (1, 0),

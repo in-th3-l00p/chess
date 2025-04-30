@@ -1,5 +1,7 @@
-use crate::board::color::Color;
+use crate::board::pieces::color::Color;
 use std::hash::{Hash, Hasher};
+
+pub mod color;
 
 #[derive(Debug)]
 pub struct Piece {

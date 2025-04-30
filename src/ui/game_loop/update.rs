@@ -1,6 +1,6 @@
 use macroquad::input::{is_mouse_button_down, is_mouse_button_released, mouse_position, MouseButton};
 use crate::ai;
-use crate::move_generation::generate_piece_moves;
+use crate::board::generation::generate_piece_moves;
 use crate::ui::{constants, GameState};
 
 fn get_selected_square() -> (i32, i32) {
@@ -17,7 +17,7 @@ pub async fn execute(state: &mut GameState) {
     }
 
     // ai move
-    if let crate::board::color::Color::Black = state.board.get_turn() {
+    if let crate::board::pieces::color::Color::Black = state.board.get_turn() {
         if let Some(ai_move) = ai::get_move(&state.board, state.board.get_turn()) {
             state.board.make_move(ai_move);
             state.board.change_turn();

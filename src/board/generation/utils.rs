@@ -1,7 +1,8 @@
 use crate::board::Board;
-use crate::board::color::Color;
-use crate::board::piece::{Piece, PieceType};
-use crate::move_generation::{generate_unchecked_moves_by_color, BoardMove};
+use crate::board::pieces::color::Color;
+use crate::board::pieces::{Piece, PieceType};
+use crate::board::generation::generate_unchecked_moves_by_color;
+use crate::board::moving::BoardMove;
 
 pub fn generate_continuous(
     board: &Board,

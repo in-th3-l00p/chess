@@ -3,28 +3,12 @@ mod pieces;
 pub mod perft;
 
 use pieces::{bishop, knight, pawn, queen, rook};
-use crate::board::piece::PieceType;
+use crate::board::pieces::PieceType;
 use crate::board::Board;
-use crate::board::color::Color;
-use crate::move_generation::pieces::king;
-use crate::move_generation::utils::is_in_check;
-
-#[derive(Clone, Eq, PartialEq)]
-pub struct BoardMove {
-    pub from: (i32, i32),
-    pub to: (i32, i32),
-    pub promote: Option<PieceType>,
-}
-
-impl BoardMove {
-    pub fn new(
-        from: (i32, i32),
-        to: (i32, i32),
-        promote: Option<PieceType>
-    ) -> BoardMove {
-        BoardMove { from, to, promote }
-    }
-}
+use crate::board::pieces::color::Color;
+use crate::board::generation::pieces::king;
+use crate::board::generation::utils::is_in_check;
+use crate::board::moving::BoardMove;
 
 fn generate_piece_unchecked_moves(board: &Board, pos: (i32, i32)) -> Vec<BoardMove> {
     let mut moves = Vec::new();

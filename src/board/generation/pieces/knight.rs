@@ -1,7 +1,7 @@
-use crate::board::piece::Piece;
+use crate::board::pieces::Piece;
 use crate::board::Board;
-use crate::move_generation::BoardMove;
-use crate::move_generation::utils::add_move;
+use crate::board::moving::BoardMove;
+use crate::board::generation::utils::add_move;
 
 const KNIGHT_OFFSETS: [(i32, i32); 8] = [
     (2, 1), (1, 2),
