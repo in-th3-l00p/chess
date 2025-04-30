@@ -54,7 +54,7 @@ impl Board {
                         let capture = (board_move.to.0, board_move.to.1 - delta);
                         board_move.en_passant = true;
                         board_move.captured_piece = self.get_piece(capture);
-                        self.set_data(capture, 0u8);
+                        self.set_empty(capture);
                     }
                     self.set_piece(board_move.from, &Piece {
                         color: piece.color,
@@ -94,7 +94,7 @@ impl Board {
                                     rook_to,
                                     self.get_data((7, board_move.from.1)) | 0b00001000u8
                                 );
-                                self.set_data(rook_from, 0u8);
+                                self.set_empty(rook_from);
                             }
                         }
                     }
@@ -113,10 +113,9 @@ impl Board {
         self.last_move = Some(board_move.clone());
         self.turn = self.turn.inverse();
         self.set_data(board_move.to, self.get_data(board_move.from));
-        self.set_data(board_move.from, 0u8);
+        self.set_empty(board_move.from);
     }
 
     pub fn unmake_move(&mut self) {
-
     }
 }

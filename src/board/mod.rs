@@ -25,6 +25,10 @@ impl Board {
     fn set_data(&mut self, coords: (i32, i32),  piece: u8) {
         self.data[(coords.1 + 2) as usize][(coords.0 + 2) as usize] = piece;
     }
+
+    fn set_empty(&mut self, coords: (i32, i32)) {
+        self.data[(coords.1 + 2) as usize][(coords.0 + 2) as usize] = 0;
+    }
 }
 
 impl Board {
