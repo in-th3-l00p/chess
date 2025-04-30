@@ -48,10 +48,6 @@ impl Board {
         self.turn
     }
 
-    pub fn change_turn(&mut self) {
-        self.turn = self.turn.inverse();
-    }
-
     pub fn get_piece(&self, coords: (i32, i32)) -> Option<Piece> {
         Piece::from_u8(self.data[(coords.1 + 2) as usize][(coords.0 + 2) as usize])
     }

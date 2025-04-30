@@ -3,7 +3,7 @@ use std::hash::{Hash, Hasher};
 
 pub mod color;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Piece {
     pub(crate) color: Color,
     pub(crate) piece_type: PieceType

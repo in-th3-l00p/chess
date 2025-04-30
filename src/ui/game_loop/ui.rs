@@ -49,7 +49,6 @@ pub fn promote_window(state: &mut GameState) {
 
                 if selected {
                     state.board.make_move(promote_move);
-                    state.board.change_turn();
                     state.selected_piece = None;
                     state.possible_moves = None;
                     state.preview_piece = None;

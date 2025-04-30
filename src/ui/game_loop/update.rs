@@ -20,7 +20,6 @@ pub async fn execute(state: &mut GameState) {
     if let crate::board::pieces::color::Color::Black = state.board.get_turn() {
         if let Some(ai_move) = ai::get_move(&state.board, state.board.get_turn()) {
             state.board.make_move(ai_move);
-            state.board.change_turn();
         }
         return;
     }
@@ -60,7 +59,6 @@ pub async fn execute(state: &mut GameState) {
                     state.promote_move = Some(selected_move);
                 } else {
                     state.board.make_move(selected_move);
-                    state.board.change_turn();
                     state.selected_piece = None;
                     state.possible_moves = None;
                     state.preview_piece = None;
