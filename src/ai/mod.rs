@@ -17,7 +17,7 @@ pub fn get_move(board: &Board, color: Color) -> Option<BoardMove> {
             let mut new_board = board.clone();
             new_board.make_move(i.1.clone());
 
-            let evaluation = -searching::alphabeta::search(
+            let evaluation = -searching::search(
                 &mut new_board,
                 constants::SEARCH_DEPTH - 1,
                 color.inverse(),
